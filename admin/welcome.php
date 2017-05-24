@@ -33,6 +33,7 @@ if (!$connection) {
                         <thead>
                         <tr>
                             <th>Applicant Name</th>
+                            <th>Order Id</th>
                             <th>Case type</th>
                             <th>Case No.</th>
                             <th>Case Year</th>
@@ -48,6 +49,7 @@ if (!$connection) {
                         <?php foreach($orders as $order) { $reason = $order['applicant_doc_rejection_reason'] ?>
                         <tr>
                             <td><?php echo $order['applicant_name'] ?></td>
+                            <td><?php echo $order['order_id'] ?></td>
                             <td><?php echo $order['case_type'] ?></td>
                             <td><?php echo $order['case_no'] ?></td>
                             <td><?php echo $order['case_year'] ?></td>
@@ -91,7 +93,7 @@ if (!$connection) {
                 <p id="rejection-reason-p"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-global-thin" data-dismiss="modal"></button>
+                <button type="button" class="btn btn-global btn-global-thin" data-dismiss="modal">Ok</button>
             </div>
         </div>
     </div>
@@ -132,7 +134,6 @@ if (!$connection) {
     $('.rejection-reason').click(function () {
 
         var reason = $(this).data('reason');
-        console.log(reason);
         $('#rejection-reason-p').html(reason);
     });
 

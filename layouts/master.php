@@ -7,23 +7,23 @@
     <title>High Court</title>
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/jquery-ui.css">
-    <link rel="stylesheet" href="/css/datatables.min.css">
-    <link rel="stylesheet" href="/css/developer.css">
-      <link rel="stylesheet" href="/css/mystyle.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/jquery-ui.css">
+    <link rel="stylesheet" href="../css/datatables.min.css">
+    <link rel="stylesheet" href="../css/developer.css">
+      <link rel="stylesheet" href="../css/mystyle.css">
 
-    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0../css/font-awesome.min.css">
 -->
-    <script src="/js/jquery.min.js"></script>
-      <script src="/js/jquery-ui.min.js"></script>
-      <script src="/js/jquery.validate.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/helper.js"></script>
-    <script src="/js/datatables.min.js"></script>
-    <script src="/js/high-court.js"></script>
+    <script src="../js/jquery.min.js"></script>
+      <script src="../js/jquery-ui.min.js"></script>
+      <script src="../js/jquery.validate.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/helper.js"></script>
+    <script src="../js/datatables.min.js"></script>
+    <script src="../js/high-court.js"></script>
 
 
   </head>
@@ -32,10 +32,14 @@
       <div class="container-fluid">
           <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                  <a href="/" class="mt10 logo pull-left no-text-decoration">
-                      <img src="/images/logo.png" />
+                  <a href="../" class="mt10 logo pull-left no-text-decoration">
+                      <img src="../images/logo.png" />
                   </a>
-                  <!--<a class="btn btn-green btn-global-thin pull-right" href="/login/logout.php"> Log out </a>-->
+                  <h3 style="margin-top: 60px; font-size: 40px; font-family: 'American Typewriter'">
+                      HIGH COURT OF JAMMU & KASHMIR
+                  </h3>
+
+                  <?php if (!empty($_SESSION['logged_in']) ) { ?>
                   <div class="dropdown pull-right">
                       <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Hello <?php echo !empty($_SESSION['logged_in']) ? $_SESSION['logged_in'] : 'admin' ?>
@@ -43,10 +47,11 @@
                       </button>
                       <ul class="dropdown-menu" aria-labelledby="dLabel">
                           <li>
-                              <a href="/login/logout.php">Log out</a>
+                              <a href="../login/logout.php">Log out</a>
                           </li>
                       </ul>
                   </div>
+                  <?php } ?>
               </div>
           </div>
       </div>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 if(!empty($_SESSION['logged_in'])) {
-    echo '<script>window.location = "/admin/welcome.php";</script>';
+    echo '<script>window.location = "../admin/welcome.php";</script>';
     exit();
 }
     include "master.php";
@@ -18,7 +18,7 @@ if(!empty($_SESSION['logged_in'])) {
                     type: "POST",
                     success: function (data) {
                         if (data == 1) {
-                            window.location = "/admin/welcome.php";
+                            window.location = "../admin/welcome.php";
                         } else {
                             $("#login-status").html(data);
                         }
@@ -92,7 +92,7 @@ if(!empty($_SESSION['logged_in'])) {
             <?php include "captcha.php" ?>
             <div class="form-group" style="margin-bottom: 40px;">
                 <div class="col-sm-12">
-                    <input class="btn btn-default submit text-uppercase" onclick="sendContact()" value="Log In">
+                    <input type="button" class="btn btn-default submit text-uppercase" onclick="sendContact()" value="Log In">
                 </div>
             </div>
         </form>

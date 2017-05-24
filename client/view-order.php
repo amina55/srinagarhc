@@ -1,15 +1,13 @@
 <?php
-
-$baseUrl = "http://high-court:8888";
 include "../layouts/database_access.php";
 try {
     if (!$connection) {
         $message = "Connection Failed.";
     } else {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $uniqueOrderId = $_POST['order_id'];
+            $uniqueOrderId = trim($_POST['order_id']);
         } else {
-            $uniqueOrderId = !empty($_GET['order_id']) ? $_GET['order_id'] : '';
+            $uniqueOrderId = !empty($_GET['order_id']) ? trim($_GET['order_id']) : '';
         }
         if($uniqueOrderId) {
             $query = "select * from client_order where order_id = '$uniqueOrderId'";
@@ -105,7 +103,7 @@ include "../layouts/master.php";
                             echo "<br><br>";
                             if(date('Y-m-d') >= $orderDetail['upload_date']) { ?>
                             <div class="pull-left">
-                                <a href="<?php echo $baseUrl ?>/uploads/<?php echo $orderDetail['upload_document'] ?>" class="btn btn-global-thick btn-green">Click here to download Document</a>
+                                <a target="_blank" href="../uploads/<?php echo $orderDetail['upload_document'] ?>" class="btn btn-global-thick btn-green">Click here to download Document</a>
                                 <br><br><br>
 
                                 <?php if(empty($orderDetail['applicant_doc_status'])) { ?>
@@ -127,7 +125,7 @@ include "../layouts/master.php";
                            <?php }
                         } else { ?>
 
-                            <h2>Sorry, You request is rejected, Here is the rejection detail.</h2><br><br>
+                            <h2>Sorry, You request is rejected. For Detail Discuss to Admin.</h2><br><br>
                             <h5><span class="bold"> Rejection Reason : </span> <?php echo $orderDetail['rejection_reason']?></h5>
 
                         <?php  } ?>
@@ -138,7 +136,7 @@ include "../layouts/master.php";
                         </div>
 
                     <?php } else { ?>
-                        <h2>You order is still in pending state. Kindly wait for your order.</h2>
+                        <h2>You order is in queue state. Kindly wait for your order.</h2>
                     <?php    }
                 }
                 ?>

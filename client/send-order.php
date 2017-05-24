@@ -15,24 +15,19 @@ if (!$connection) {
             $documentType = trim($_POST['document_type']);
             $documentDate = trim($_POST['document_date']);
             $paymentType = trim($_POST['payment_type']);
-            $licenceNo = $caseName = '';
+            $licenceNo  = '';
 
-            $query = "select case_type, type_name from case_type_t where case_type = $caseType";
-            $caseTypeName = $connection->query($query);
-
-            foreach ($caseTypeName as $case) {
-                if($case['case_type'] == $caseType) {
-                    $caseName = $case['type_name'];
-                }
-            }
-
-            $orderId = $caseName.'-'.$caseNo.'-'.$caseYear.'-'.str_pad(rand(0, 999), '3', '0', STR_PAD_LEFT);
+            $query = "select case_type, type_name from case_type_t where case_type = :case_type";
+            $statement = $connection->prepare($query);
+            $statement->execute(['case_type' => $caseType]);
+            $caseTypeName = $statement->fetch();
+            $orderId = $caseTypeName['type_name'].'-'.$caseNo.'-'.$caseYear.'-'.str_pad(rand(0, 999), '3', '0', STR_PAD_LEFT);
 
             if (empty($name) || empty($caseYear) || empty($caseNo) || empty($caseType) || empty($documentType) || empty($paymentType) || empty($documentDate)) {
                 $message = "Required Parameter is missing";
             } else {
                 if($paymentType == 'free') {
-                    $licenceNo = $_POST['licence_no'];
+                    $licenceNo = trim($_POST['licence_no']);
                     if(!$licenceNo) {
                         $message = "Licence Number is required for free payment.";
                     }
@@ -114,7 +109,7 @@ if (!$connection) {
                     <select class="form-control" name="case_type">
 
                         <?php foreach ($caseTypes as $caseType) { ?>
-                        <option value="<?php echo $caseType['case_type'];?>"> <?php echo $caseType['type_name'];?></option>
+                        <option value="<?php echo $caseType['case_type'];?>"> <?php echo $caseType['type_name']/*.'-'.$caseType['case_type']*/;?></option>
                         <?php } ?>
                     </select>
                     <span class="error-message"></span>
@@ -136,7 +131,7 @@ if (!$connection) {
                         Case Year
                         <em class="required-asterik">*</em>
                     </label>
-                    <input class="form-control" type="number" name="case_year" min="1950" max="<?php echo date('Y') ?>">
+                    <input class="form-control" type="number" placeholder="Case Year" name="case_year" min="1950" max="<?php echo date('Y') ?>">
                     <span class="error-message"></span>
                 </div>
             </div>
@@ -146,7 +141,7 @@ if (!$connection) {
                         Order Date
                         <em class="required-asterik">*</em>
                     </label>
-                    <input class="date-format form-control" type="text" name="document_date">
+                    <input class="date-format form-control" placeholder="Order Date" type="text" name="document_date">
                     <span class="error-message"></span>
                 </div>
             </div>
