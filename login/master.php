@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/varaiables.css">
     <link rel="stylesheet" href="../css/mystyle.css">
+    <link rel="stylesheet" href="../css/jquery-ui.css">
 
     <script src="../js/jquery.min.js"></script>
+    <script src="../js/jquery-ui.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
 </head>
 <body>
