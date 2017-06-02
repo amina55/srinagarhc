@@ -9,17 +9,17 @@ try{
         $confirmPassword = trim($_REQUEST['confirm_password']);
 
         if (empty($name) || empty($username) || empty($email) || empty($password) || empty($confirmPassword)) {
-            print "<p class='error'>Required Parameter is missing</p>";
+            print "<div class='alert alert-danger'>Required Parameter is missing</div>";
         } else {
             if($password != $confirmPassword) {
-                print "<p class='error'>Please verify Password and Confirm Password.</p>";
+                print "<div class='alert alert-danger'>Please verify Password and Confirm Password.</div>";
             } else {
                 include "../layouts/database_access.php";
                 if (!$connection) {
-                    print "<p class='error'><p class='error'>Connection Failed.</p>";
+                    print "<div class='alert alert-danger'>Connection Failed.</div>";
                 } else {
                     if( !preg_match('^(?=.*\d)(?=.*?[a-zA-Z])(?=.*?[\W_]).{6,10}$^', $password) || strlen( $password) < 6) {
-                        print "<p class='error'>Password length should be 6-20 characters and contain at-least one digit, upper or lowercase letter and at-least one special character.</p>";
+                        print "<div class='alert alert-danger'>Password length should be 6-20 characters and contain at-least one digit, upper or lowercase letter and at-least one special character.</div>";
                     } else {
                         $repeat = '';
                         $query = "select * from users where username = '$username' or email = '$email'";
@@ -37,21 +37,21 @@ try{
                             $insertQuery = "INSERT INTO users (name, username, email, password) VALUES  ('$name', '$username', '$email', '$password')";
                             $result = $connection->exec($insertQuery);
                             if (!$result) {
-                                print "<p class='error'>Error in User Sign up</p>";
+                                print "<div class='alert alert-danger'>Error in User Sign up</div>";
                             } else {
                                 echo $result;
                             }
                         } else {
-                            print "<p class='error'>Username or Email should be unique. Please enter unique ".$repeat."</p>";
+                            print "<div class='alert alert-danger'>Username or Email should be unique. Please enter unique ".$repeat."</div>";
                         }
                     }
                 }
             }
         }
     } else {
-        print "<p class='error'>Enter Correct Captcha Code.</p>";
+        print "<div class='alert alert-danger'>Enter Correct Captcha Code.</div>";
     }
 }catch (Exception $e) {
-    echo "<p class='error'>Error : " . $e->getMessage() . "</p>";
+    echo "<div class='alert alert-danger'>Error : " . $e->getMessage() . "</div>";
 }
 ?>

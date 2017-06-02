@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="../css/jquery-ui.css">
     <link rel="stylesheet" href="../css/datatables.min.css">
     <link rel="stylesheet" href="../css/developer.css">
-      <link rel="stylesheet" href="../css/mystyle.css">
+      <link rel="stylesheet" href="../css/varaiables.css">
 
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0../css/font-awesome.min.css">
 -->
@@ -32,26 +32,27 @@
       <div class="container-fluid">
           <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                  <a href="../" class="mt10 logo pull-left no-text-decoration">
-                      <img src="../images/logo.png" />
-                  </a>
-                  <h3 style="margin-top: 60px; font-size: 40px; font-family: 'American Typewriter'">
-                      HIGH COURT OF JAMMU & KASHMIR
-                  </h3>
-
-                  <?php if (!empty($_SESSION['logged_in']) ) { ?>
-                  <div class="dropdown pull-right">
-                      <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Hello <?php echo !empty($_SESSION['logged_in']) ? $_SESSION['logged_in'] : 'admin' ?>
-                          <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu" aria-labelledby="dLabel">
-                          <li>
-                              <a href="../login/logout.php">Log out</a>
-                          </li>
-                      </ul>
+                  <div class="col-sm-10">
+                      <a href="../" class="logo pull-left no-text-decoration">
+                          <img src="../images/logocopy.jpg" />
+                      </a>
                   </div>
-                  <?php } ?>
+
+                  <div class="col-sm-2 mt20">
+                      <?php if (!empty($_SESSION['logged_in']) ) { ?>
+                          <div class="dropdown pull-right">
+                              <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  Hello <?php echo !empty($_SESSION['logged_in']) ? $_SESSION['logged_in'] : 'admin' ?>
+                                  <span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu" aria-labelledby="dLabel">
+                                  <li>
+                                      <a href="../login/logout.php">Log out</a>
+                                  </li>
+                              </ul>
+                          </div>
+                      <?php } ?>
+                  </div>
               </div>
           </div>
       </div>
@@ -60,5 +61,5 @@
 
     <section class="container-fluid mt20">
         <div class="row">
-            <div class="col-xs-12 col-sm-11 col-md-11 col-lg-12">
-                <div class="box">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
