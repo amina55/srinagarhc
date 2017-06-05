@@ -42,7 +42,7 @@
                       <?php if (!empty($_SESSION['logged_in']) ) { ?>
                           <div class="dropdown pull-right">
                               <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  Hello <?php echo !empty($_SESSION['logged_in']) ? $_SESSION['logged_in'] : 'admin' ?>
+                                  Hello <?php echo !empty($_SESSION['logged_in']) ? $_SESSION['logged_in'] : 'user' ?>
                                   <span class="caret"></span>
                               </button>
                               <ul class="dropdown-menu" aria-labelledby="dLabel">

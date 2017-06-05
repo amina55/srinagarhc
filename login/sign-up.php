@@ -1,4 +1,6 @@
-<?php include "master.php" ?>
+<?php include "master.php";
+$type = !empty($_GET['type']) ? $_GET['type'] : 'applicant';
+?>
 
     <script>
         function sendContact() {
@@ -8,7 +10,8 @@
                 jQuery.ajax({
                     url: "sign-up-post.php",
                     data: 'name=' + $("#name").val() + '&username=' + $("#username").val() + '&email=' + $("#email").val()
-                    + '&password=' + $("#password").val() + '&confirm_password=' + $("#confirm_password").val() + '&captcha=' + $("#captcha").val(),
+                    + '&password=' + $("#password").val() + '&confirm_password=' + $("#confirm_password").val() +
+                    '&captcha=' + $("#captcha").val() + '&type=' + $("#type").val(),
                     type: "POST",
                     success: function (data) {
                         if (data == 1) {
@@ -69,6 +72,7 @@
                         <div id="signup-status" class="col-sm-12"></div>
                     </div>
 
+                    <input type="hidden" id="type" name="type" value="<?php echo $type; ?>">
                     <div class="form-group">
                         <label for="name" class="cols-sm-2 control-label">Your Name</label>
                         <div class="cols-sm-10">

@@ -2,13 +2,14 @@
 session_start();
 try{
     if ($_POST["captcha"] == $_SESSION["captcha_code"]) {
-        $name = trim($_REQUEST['name']);
-        $username = trim($_REQUEST['username']);
-        $email = trim($_REQUEST['email']);
-        $password = trim($_REQUEST['password']);
-        $confirmPassword = trim($_REQUEST['confirm_password']);
+        $name = trim($_POST['name']);
+        $username = trim($_POST['username']);
+        $email = trim($_POST['email']);
+        $password = trim($_POST['password']);
+        $confirmPassword = trim($_POST['confirm_password']);
+        $type = trim($_POST['type']);
 
-        if (empty($name) || empty($username) || empty($email) || empty($password) || empty($confirmPassword)) {
+        if (empty($name) || empty($username) || empty($email) || empty($password) || empty($confirmPassword) || empty($type)) {
             print "<div class='alert alert-danger'>Required Parameter is missing</div>";
         } else {
             if($password != $confirmPassword) {
@@ -33,13 +34,21 @@ try{
                         }
 
                         if(!$repeat) {
-                            $password = hash('sha512', $password);
-                            $insertQuery = "INSERT INTO users (name, username, email, password) VALUES  ('$name', '$username', '$email', '$password')";
-                            $result = $connection->exec($insertQuery);
-                            if (!$result) {
-                                print "<div class='alert alert-danger'>Error in User Sign up</div>";
+                            $userType = '';
+                            if($type == 'applicant' || ($type == 'admin' && !empty($_SESSION['logged_in']) && $_SESSION['logged_in'] == 'super-admin')) {
+                                $userType = $type;
+                            }
+                            if($userType) {
+                                $password = hash('sha512', $password);
+                                $insertQuery = "INSERT INTO users (name, username, email, password, type) VALUES  ('$name', '$username', '$email', '$password', '$userType')";
+                                $result = $connection->exec($insertQuery);
+                                if (!$result) {
+                                    print "<div class='alert alert-danger'>Error in User Sign up</div>";
+                                } else {
+                                    echo $result;
+                                }
                             } else {
-                                echo $result;
+                                print "<div class='alert alert-danger'>You have no permission of '$type' Signup.</div>";
                             }
                         } else {
                             print "<div class='alert alert-danger'>Username or Email should be unique. Please enter unique ".$repeat."</div>";
