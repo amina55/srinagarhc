@@ -1,1 +1,1 @@
-<?php  include "../layouts/login-access.php";  ?>
+<?php  header('Location: ../applicant/send-order.php'); ?>

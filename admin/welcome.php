@@ -63,10 +63,10 @@ if (!$connection) {
                                         <td><?php echo $pendingOrder['applicant_name'] ?></td>
                                         <td><?php echo $pendingOrder['order_id'] ?></td>
                                         <td><?php echo $pendingOrder['case_type'] ?></td>
-                                        <td>
-                                            <a href="" data-toggle="modal" data-target="#view-detail-modal" data-id="<?php echo $pendingOrder['id']; ?>" class="view-detail no-text-decoration" title="View Detail of Order">
-                                                <?php echo $pendingOrder['case_no'] ?>
-                                            </a>
+                                        <td><?php echo $pendingOrder['case_no'] ?>
+                                            <!--<a href="" data-toggle="modal" data-target="#view-detail-modal" data-id="<?php /*echo $pendingOrder['id']; */?>" class="view-detail no-text-decoration" title="View Detail of Order">
+                                                <?php /*echo $pendingOrder['case_no'] */?>
+                                            </a>-->
                                         </td>
                                         <td><?php echo $pendingOrder['case_year'] ?></td>
                                         <td><?php echo $pendingOrder['payment_type'] ?></td>
@@ -114,10 +114,11 @@ if (!$connection) {
                                         <td><?php echo $disposedOrder['applicant_name'] ?></td>
                                         <td><?php echo $disposedOrder['order_id'] ?></td>
                                         <td><?php echo $disposedOrder['case_type'] ?></td>
-                                        <td>
-                                            <a href="" data-toggle="modal" data-target="#view-detail-modal" data-id="<?php echo $disposedOrder['id']; ?>" class="view-detail no-text-decoration" title="View Detail of Order">
-                                                <?php echo $disposedOrder['case_no'] ?>
-                                            </a>
+                                        <td><?php echo $disposedOrder['case_no'] ?>
+
+                                           <!-- <a href="" data-toggle="modal" data-target="#view-detail-modal" data-id="<?php /*echo $disposedOrder['id']; */?>" class="view-detail no-text-decoration" title="View Detail of Order">
+                                                <?php /*echo $disposedOrder['case_no'] */?>
+                                            </a>-->
                                         </td>
                                         <td><?php echo $disposedOrder['case_year'] ?></td>
                                         <td><?php echo ($disposedOrder['order_status']) ? $disposedOrder['order_status'] : '---' ?></td>
@@ -243,7 +244,7 @@ if (!$connection) {
                         </div>
                     </div>
 
-                    <div class="form-group col-sm-12">
+                    <!--<div class="form-group col-sm-12">
                         <label class="col-sm-4 control-label text-right">
                             Upload Document
                             <em class="required-asterik">*</em>
@@ -251,7 +252,7 @@ if (!$connection) {
                         <div class="col-sm-8 text-left bold">
                             <input class="form-control" type="file" name="upload_document" accept="application/pdf" required>
                         </div>
-                    </div>
+                    </div>-->
 
                     <div class="form-group col-sm-12">
                         <label class="col-sm-4 control-label text-right">
