@@ -63,21 +63,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   display: block;
 }
 
-/* line 13, ../sass/variable.scss */
-.fs10 {
-  font-size: 10px;
-}
-
-/* line 14, ../sass/variable.scss */
-.fs12 {
-  font-size: 12px;
-}
-
-/* line 15, ../sass/variable.scss */
-.fs14 {
-  font-size: 14px;
-}
-
 /* line 16, ../sass/variable.scss */
 .fs16, .heading-area span {
   font-size: 16px;
@@ -88,139 +73,9 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   font-size: 18px;
 }
 
-/* line 18, ../sass/variable.scss */
-.fs20 {
-  font-size: 20px;
-}
-
-/* line 19, ../sass/variable.scss */
-.fs22 {
-  font-size: 22px;
-}
-
-/* line 20, ../sass/variable.scss */
-.fs24 {
-  font-size: 24px;
-}
-
-/* line 21, ../sass/variable.scss */
-.fs25 {
-  font-size: 25px;
-}
-
-/* line 22, ../sass/variable.scss */
-.fs26 {
-  font-size: 26px;
-}
-
-/* line 23, ../sass/variable.scss */
-.fs28 {
-  font-size: 28px;
-}
-
-/* line 24, ../sass/variable.scss */
-.fs30 {
-  font-size: 30px;
-}
-
-/* line 25, ../sass/variable.scss */
-.fs32 {
-  font-size: 32px;
-}
-
 /* line 27, ../sass/variable.scss */
 .fwb, .labels-heading {
   font-weight: bold;
-}
-
-/* line 31, ../sass/variable.scss */
-.fwn {
-  font-weight: normal;
-}
-
-/* line 35, ../sass/variable.scss */
-.no-t-m {
-  margin-top: 0;
-}
-
-/* line 39, ../sass/variable.scss */
-.no-b-m {
-  margin-bottom: 0;
-}
-
-/* line 42, ../sass/variable.scss */
-.no-l-m {
-  margin-left: 0;
-}
-
-/* line 45, ../sass/variable.scss */
-.no-r-m {
-  margin-right: 0;
-}
-
-/* line 49, ../sass/variable.scss */
-.no-margin {
-  margin: 0;
-}
-
-/* line 53, ../sass/variable.scss */
-.no-t-p {
-  padding-top: 0;
-}
-
-/* line 57, ../sass/variable.scss */
-.no-b-p {
-  padding-bottom: 0;
-}
-
-/* line 60, ../sass/variable.scss */
-.no-l-p {
-  padding-left: 0;
-}
-
-/* line 63, ../sass/variable.scss */
-.no-r-p {
-  padding-right: 0;
-}
-
-/* line 67, ../sass/variable.scss */
-.no-padding {
-  padding: 0;
-}
-
-/* line 73, ../sass/variable.scss */
-.mt5 {
-  margin-top: 5px;
-}
-
-/* line 74, ../sass/variable.scss */
-.mt10 {
-  margin-top: 10px;
-}
-
-/* line 75, ../sass/variable.scss */
-.mt15 {
-  margin-top: 15px;
-}
-
-/* line 76, ../sass/variable.scss */
-.mt20 {
-  margin-top: 20px;
-}
-
-/* line 77, ../sass/variable.scss */
-.mt25 {
-  margin-top: 25px;
-}
-
-/* line 78, ../sass/variable.scss */
-.mt30 {
-  margin-top: 30px;
-}
-
-/* line 79, ../sass/variable.scss */
-.mt35 {
-  margin-top: 35px;
 }
 
 /* line 82, ../sass/variable.scss */
@@ -238,19 +93,9 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   text-align: left;
 }
 
-/* line 93, ../sass/variable.scss */
-.tar {
-  text-align: right;
-}
-
-/* line 97, ../sass/variable.scss */
-.w156 {
-  width: 156px !important;
-}
-
 /* line 5, ../sass/style.scss */
 body {
-  background: #b4c3ca;
+  background: #f3f2f1;
   font-family: Arial;
   font-size: 13px;
 }
@@ -268,12 +113,12 @@ body {
   border: #ccc 1px solid;
   margin: 50px auto 0;
   padding: 0 0 15px 0;
-  width: 400px;
+  max-width: 400px;
 }
 
 /* line 24, ../sass/style.scss */
 .box-header {
-  border-bottom: #58b766 2px  solid;
+  border-bottom: #2da237 2px  solid;
   height: 50px;
   line-height: 50px;
   padding: 0 30px;
@@ -302,15 +147,6 @@ body {
   font-weight: bold;
 }
 
-/* line 50, ../sass/style.scss */
-h3 {
-  color: #000;
-}
-
-/* line 54, ../sass/style.scss */
-h6 {
-  color: #777;
-}
 
 /* line 58, ../sass/style.scss */
 header {
@@ -543,11 +379,6 @@ textarea {
   padding: 15px;
   border-radius: 4px;
   border: #ccc 1px solid;
-}
-
-/* line 273, ../sass/style.scss */
-.no-left-padding {
-  padding-left: 0 !important;
 }
 
 /* line 276, ../sass/style.scss */

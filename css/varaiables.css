@@ -1,0 +1,204 @@
+.w20p {
+    width: 20%;
+}
+.w30p {
+    width: 30%;
+}
+.w50p {
+    width: 50%;
+}
+.w60p {
+    width: 60%;
+}
+.w80 {
+    width: 80px !important;
+}
+.w150px {
+    width: 150px;
+}
+.w650px {
+    width:650px;
+}
+.w400px {
+    width:400px;
+}
+.w180px {
+    width: 180px;
+}
+.w518px {
+    width:518px;
+}
+.ml20{
+    margin-left: 20px;
+}
+.ml10{
+    margin-left: 10px;
+}
+.mr20 {
+    margin-right: 20px;
+}
+.w284px {
+    width: 284px;
+}
+.w8p {
+    width: 8%;
+}
+.bold {
+    font-weight: bold;
+}
+.w10p {
+    width:10%;
+}
+.default-cursor {
+    cursor: default;
+}
+.inline-block {
+    display: inline-block;
+}
+.tar {
+    text-align: right;
+}
+.w156 {
+    width: 156px !important;
+}
+.no-padding {
+    padding: 0;
+}
+.mt5 {
+    margin-top: 5px;
+}
+.mt10 {
+    margin-top: 10px;
+}
+.mt15 {
+    margin-top: 15px;
+}
+.mt20 {
+    margin-top: 20px;
+}
+.mt25 {
+    margin-top: 25px;
+}
+.mt30 {
+    margin-top: 30px;
+}
+.mt35 {
+    margin-top: 35px;
+}
+.fs20 {
+    font-size: 20px;
+}
+.fs22 {
+    font-size: 22px;
+}
+.fs24 {
+    font-size: 24px;
+}
+.fs25 {
+    font-size: 25px;
+}
+.fs26 {
+    font-size: 26px;
+}
+.fs28 {
+    font-size: 28px;
+}
+.fs30 {
+    font-size: 30px;
+}
+.fs32 {
+    font-size: 32px;
+}
+.fs10 {
+    font-size: 10px;
+}
+.fs12 {
+    font-size: 12px;
+}
+.fs14 {
+    font-size: 14px;
+}
+.fwn {
+    font-weight: normal;
+}
+.no-t-m {
+    margin-top: 0;
+}
+.no-b-m {
+    margin-bottom: 0;
+}
+.no-l-m {
+    margin-left: 0;
+}
+.no-r-m {
+    margin-right: 0;
+}
+.no-margin {
+    margin: 0;
+}
+.no-t-p {
+    padding-top: 0;
+}
+.no-b-p {
+    padding-bottom: 0;
+}
+.no-l-p {
+    padding-left: 0;
+}
+.no-r-p {
+    padding-right: 0;
+}
+h2 {
+    font-weight: bold;
+    font-size: 25px;
+}
+h5 {
+    font-size: 15px;
+}
+h3 {
+    color: #000;
+}
+h6 {
+    color: #777;
+}
+.no-left-padding {
+    padding-left: 0 !important;
+}
+.required-asterik {
+    color: #e32;
+    display:inline;
+}
+.centralized-text {
+    text-align: center !important;;
+}
+
+/*This is common style*/
+
+
+footer {
+    height: 10px;
+    background-color: #2da237;
+    padding: 25px;
+    /*bottom:10px;
+    position: absolute;*/
+    width: 100%;
+    color: #ffffff;
+}
+.btn.btn-global {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #fff;
+    background-color: #2da237;
+    font-size: 14px;
+}
+.btn.btn-global-thick {
+    padding-right: 30px;
+    padding-left: 30px;
+}
+.btn.btn-global-thin{
+    padding-right: 40px;
+    padding-left: 40px;
+}
+a{
+    cursor: pointer;
+}

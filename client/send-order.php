@@ -63,7 +63,7 @@ if (!$connection) {
     $query = "select case_type, type_name from case_type_t";
     $caseTypes = $connection->query($query);
 }
-    include "../login/master.php";
+include "../login/master.php";
 ?>
 <script>
     $( function() {
@@ -72,145 +72,142 @@ if (!$connection) {
         });
     });
 </script>
-<div class="login">
-    <a href="view-order.php" class="btn btn-global-thick btn-green pull-right mr20"> View Order Detail</a>
+<div class="row main">
 
-    <div class="box-header">
-        <h3 class="login-heading">Client Order</h3>
+    <div class="main-login">
+        <a href="view-order.php" class="btn btn-lg large-button"> View Order Detail</a>
+        <br>
+        <div class="main-center">
+
+            <form method="POST" action="" accept-charset="UTF-8" class="form-horizontal form-login">
+                <?php if ($message) { ?>
+                    <div class="alert <?php echo $alertType ?>">
+                        <?php echo $message?>
+                    </div>
+                <?php } ?>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <label class="control-label mb10" for="applicant_name">
+                            Applicant Name
+                            <em class="required-asterik">*</em>
+                        </label>
+                        <input id="applicant_name" class="form-control" placeholder="Applicant Name" name="applicant_name" type="text" value="" required>
+                        <span class="error-message"></span>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <div class="col-sm-12">
+                        <label class="control-label mb10" for="case_type">
+                            Case type
+                            <em class="required-asterik">*</em>
+                        </label>
+                        <select class="form-control" name="case_type">
+
+                            <?php foreach ($caseTypes as $caseType) { ?>
+                                <option value="<?php echo $caseType['case_type'];?>"> <?php echo $caseType['type_name']/*.'-'.$caseType['case_type']*/;?></option>
+                            <?php } ?>
+                        </select>
+                        <span class="error-message"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <label class="control-label mb10" for="case_no">
+                            Case No.
+                            <em class="required-asterik">*</em>
+                        </label>
+                        <input type="number" id="case_no" class="form-control" placeholder="Case No." name="case_no" value="" required>
+                        <span class="error-message"></span>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <div class="col-sm-12">
+                        <label class="control-label mb10" for="case_year">
+                            Case Year
+                            <em class="required-asterik">*</em>
+                        </label>
+                        <input class="form-control" type="number" placeholder="Case Year" name="case_year" min="1950" max="<?php echo date('Y') ?>">
+                        <span class="error-message"></span>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <div class="col-sm-12">
+                        <label class="control-label mb10" for="document_date">
+                            Order Date
+                            <em class="required-asterik">*</em>
+                        </label>
+                        <input class="date-format form-control" placeholder="Order Date" type="text" name="document_date">
+                        <span class="error-message"></span>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <div class="col-sm-12">
+                        <label class="control-label mb10" for="document_type">
+                            Document type
+                            <em class="required-asterik">*</em>
+                        </label>
+                        <select class="form-control" name="document_type">
+                            <option value="petition_copy">Petition copy</option>
+                            <option value="writ">Writ</option>
+                            <option value="objection">Objection</option>
+                            <option value="vakaltnama">Vakaltnama</option>
+                            <option value="order">Order</option>
+                            <option value="judgement">Judgement</option>
+                            <option value="CMP">CMP</option>
+                            <option value="reply">Reply</option>
+                            <option value="rejoinder">Rejoinder</option>
+                            <option value="affidavit">Affidavit</option>
+                        </select>
+                        <span class="error-message"></span>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <div class="col-sm-12">
+                        <label class="control-label mb10" for="payment_type">
+                            Payment type
+                            <em class="required-asterik">*</em>
+                        </label>
+                        <select class="form-control" id="payment_type" name="payment_type">
+                            <option value="single">Single (20₹)</option>
+                            <option value="double">Double (40₹)</option>
+                            <option value="free">Free</option>
+                        </select>
+                        <span class="error-message"></span>
+                    </div>
+                </div>
+
+                <div id="licence_no_div" class="form-group">
+                    <div class="col-sm-12">
+                        <label class="control-label mb10" for="licence_no">
+                            Licence No.
+                            <em class="required-asterik">*</em>
+                        </label>
+                        <input id="licence_no" class="form-control" placeholder="Mention Lawyer Licence No. here" name="licence_no" type="text" value="">
+                        <span class="error-message"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input class="btn btn-lg btn-block large-button text-uppercase" type="submit" value="Send Order">
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <div class="login-body">
-        <form method="POST" action="" accept-charset="UTF-8" class="form-horizontal form-login">
-            <?php if ($message) { ?>
-            <div class="alert <?php echo $alertType ?>">
-                <?php echo $message?>
-                </div>
-            <?php } ?>
-            <div class="form-group">
-                <div class="col-sm-12">
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-12">
-                    <label class="control-label mb10" for="applicant_name">
-                        Applicant Name
-                        <em class="required-asterik">*</em>
-                    </label>
-                    <input id="applicant_name" class="form-control" placeholder="Applicant Name" name="applicant_name" type="text" value="" required>
-                    <span class="error-message"></span>
-                </div>
-            </div>
-            <div class="form-group ">
-                <div class="col-sm-12">
-                    <label class="control-label mb10" for="case_type">
-                        Case type
-                        <em class="required-asterik">*</em>
-                    </label>
-                    <select class="form-control" name="case_type">
 
-                        <?php foreach ($caseTypes as $caseType) { ?>
-                        <option value="<?php echo $caseType['case_type'];?>"> <?php echo $caseType['type_name']/*.'-'.$caseType['case_type']*/;?></option>
-                        <?php } ?>
-                    </select>
-                    <span class="error-message"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-12">
-                    <label class="control-label mb10" for="case_no">
-                        Case No.
-                        <em class="required-asterik">*</em>
-                    </label>
-                    <input type="number" id="case_no" class="form-control" placeholder="Case No." name="case_no" value="" required>
-                    <span class="error-message"></span>
-                </div>
-            </div>
-            <div class="form-group ">
-                <div class="col-sm-12">
-                    <label class="control-label mb10" for="case_year">
-                        Case Year
-                        <em class="required-asterik">*</em>
-                    </label>
-                    <input class="form-control" type="number" placeholder="Case Year" name="case_year" min="1950" max="<?php echo date('Y') ?>">
-                    <span class="error-message"></span>
-                </div>
-            </div>
-            <div class="form-group ">
-                <div class="col-sm-12">
-                    <label class="control-label mb10" for="document_date">
-                        Order Date
-                        <em class="required-asterik">*</em>
-                    </label>
-                    <input class="date-format form-control" placeholder="Order Date" type="text" name="document_date">
-                    <span class="error-message"></span>
-                </div>
-            </div>
-            <div class="form-group ">
-                <div class="col-sm-12">
-                    <label class="control-label mb10" for="document_type">
-                        Document type
-                        <em class="required-asterik">*</em>
-                    </label>
-                    <select class="form-control" name="document_type">
-                        <option value="petition_copy">Petition copy</option>
-                        <option value="writ">Writ</option>
-                        <option value="objection">Objection</option>
-                        <option value="vakaltnama">Vakaltnama</option>
-                        <option value="order">Order</option>
-                        <option value="judgement">Judgement</option>
-                        <option value="CMP">CMP</option>
-                        <option value="reply">Reply</option>
-                        <option value="rejoinder">Rejoinder</option>
-                        <option value="affidavit">Affidavit</option>
-                    </select>
-                    <span class="error-message"></span>
-                </div>
-            </div>
-            <div class="form-group ">
-                <div class="col-sm-12">
-                    <label class="control-label mb10" for="payment_type">
-                        Payment type
-                        <em class="required-asterik">*</em>
-                    </label>
-                    <select class="form-control" id="payment_type" name="payment_type">
-                        <option value="single">Single (20₹)</option>
-                        <option value="double">Double (40₹)</option>
-                        <option value="free">Free</option>
-                    </select>
-                    <span class="error-message"></span>
-                </div>
-            </div>
+    <script>
+        $('#licence_no_div').hide();
 
-            <div id="licence_no_div" class="form-group">
-                <div class="col-sm-12">
-                    <label class="control-label mb10" for="licence_no">
-                        Licence No.
-                        <em class="required-asterik">*</em>
-                    </label>
-                    <input id="licence_no" class="form-control" placeholder="Mention Lawyer Licence No. here" name="licence_no" type="text" value="">
-                    <span class="error-message"></span>
-                </div>
-            </div>
-
-            <div class="form-group" style="margin-bottom: 40px;">
-                <div class="col-sm-12">
-                    <input class="btn btn-default submit text-uppercase" type="submit" value="Send Order">
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-<script>
-    $('#licence_no_div').hide();
-
-    $('#payment_type').change(function () {
-        var payment_type = $(this).val();
-        if(payment_type == 'free') {
-            $('#licence_no_div').show();
-        } else {
-            $('#licence_no_div').hide();
-        }
-    });
-</script>
-<?php include "../login/footer.php" ?>
+        $('#payment_type').change(function () {
+            var payment_type = $(this).val();
+            if(payment_type == 'free') {
+                $('#licence_no_div').show();
+            } else {
+                $('#licence_no_div').hide();
+            }
+        });
+    </script>
+    <?php include "../login/footer.php" ?>

@@ -1,6 +1,6 @@
 <?php include "master.php" ?>
 
-<script>
+    <script>
         function sendContact() {
             var valid;
             valid = validateContact();
@@ -26,7 +26,6 @@
 
         function validateContact() {
             var valid = true;
-            $(".demoInputBox").css('background-color', '');
             $("#signup-status").html('');
 
             var password = $("#password").val();
@@ -36,103 +35,108 @@
             var inputs = ['username', 'name', 'email', 'password', 'confirm_password', 'captcha'];
             for (var i = 0 ; i < inputs.length ; i++ ) {
                 if (!$("#"+inputs[i]).val()) {
-                    $("#"+inputs[i]).css('background-color', '#FFFFDF');
-                    $("#signup-status").html('<p class="error">Required Parameter is missing.</p>');
+                    $("#"+inputs[i]).css('background-color', '#ffe8ea');
+                    $("#signup-status").html('<div class="alert alert-danger">Required Parameter is missing.</div>');
+                    valid = false;
+                } else {
+                    $("#" + inputs[i]).css('background-color', '#fff');
+                }
+            }
+            if(valid) {
+                if(confirm_password != password) {
+                    $("#confirm_password").css('background-color', '#ffe8ea');
+                    $("#password").css('background-color', '#ffe8ea');
+                    $("#signup-status").html('<div class="alert alert-danger">Please verify Password and Confirm Password.</div>');
+                    valid = false;
+                } else if (password_length < 6 || password_length > 20) {
+                    $("#password").css('background-color', '#ffe8ea');
+                    $('#password-error').html('Password should be atleast 6 character');
+                    $("#signup-status").html('<div class="alert alert-danger">Password length should be 6-20 characters.</div>');
                     valid = false;
                 }
             }
-            if(confirm_password != password) {
-                $("#confirm_password").css('background-color', '#FFFFDF');
-                $("#password").css('background-color', '#FFFFDF');
-                $("#signup-status").html('<p class="error">Please verify Password and Confirm Password.</p>');
-                valid = false;
-            } else if (password_length < 6 || password_length > 20) {
-                $("#password").css('background-color', '#FFFFDF');
-                $('#password-error').html('Password should be atleast 6 character');
-                $("#signup-status").html('<p class="error">Password length should be 6-20 characters.</p>');
-                valid = false;
-            }
+
             return valid;
         }
     </script>
 
-<div class="login">
-    <div class="box-header">
-        <h3 class="login-heading">Sign Up</h3>
+    <div class="container">
+        <div class="row main">
+            <div class="main-login main-center">
+                <form accept-charset="UTF-8" class="form-horizontal form-login" id="user-login">
+
+                    <div class="form-group ">
+                        <div id="signup-status" class="col-sm-12"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name" class="cols-sm-2 control-label">Your Name</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="cols-sm-2 control-label">Your Email</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username" class="cols-sm-2 control-label">Username</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="cols-sm-2 control-label">Password</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                <input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password" class="cols-sm-2 control-label">Confirm Password</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                <input type="password" class="form-control" name="confirm_password" id="confirm_password"  placeholder="Confirm your Password" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="captcha" class="cols-sm-2 control-label">Captcha</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-check fa-lg" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="captcha" id="captcha"  placeholder="Enter Captcha" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <?php include "captcha.php" ?>
+
+                    <div class="form-group ">
+                        <button type="button" onclick="sendContact()" class="btn btn-lg btn-block large-button">Register</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
     </div>
-
-    <div class="login-body">
-        <form accept-charset="UTF-8" class="form-horizontal form-login" id="user-login">
-            <div class="form-group ">
-                <div id="signup-status" class="col-sm-12s">
-                </div>
-            </div>
-            <div class="form-group ">
-                <div class="col-sm-12">
-                    <label class="control-label mb10" for="name">
-                        Name
-                        <em class="required-asterik">*</em>
-                    </label>
-                    <input id="name" class="form-control" placeholder="Name" name="name" type="text" value="" required>
-                </div>
-            </div>
-            <div class="form-group ">
-                <div class="col-sm-12">
-                    <label class="control-label mb10" for="username">
-                        Username
-                        <em class="required-asterik">*</em>
-                    </label>
-                    <input id="username" class="form-control" placeholder="Username" name="username" type="text" value="" required>
-                </div>
-            </div>
-            <div class="form-group ">
-                <div class="col-sm-12">
-                    <label class="control-label mb10" for="email">
-                        Email
-                        <em class="required-asterik">*</em>
-                    </label>
-                    <input id="email" class="form-control" placeholder="Email" name="email" type="email" value="" required>
-                </div>
-            </div>
-            <div class="form-group ">
-                <div class="col-sm-12">
-                    <label class="control-label mb10" for="password">
-                        Password
-                        <em class="required-asterik">*</em>
-                    </label>
-                    <input id="password" class="form-control" placeholder="Password" name="password" type="password" value="" required>
-                    <span class="error-message" id="password-error"> </span>
-
-                </div>
-            </div>
-            <div class="form-group ">
-                <div class="col-sm-12">
-                    <label class="control-label mb10" for="confirm_password">
-                        Confirm Password
-                        <em class="required-asterik">*</em>
-                    </label>
-                    <input id="confirm_password" class="form-control" placeholder="Confirm Password" name="confirm_password" type="password" value="" required>
-                </div>
-            </div>
-
-            <div class="form-group ">
-                <div class="col-sm-12">
-                    <label class="control-label mb10" for="captcha">
-                        Captcha
-                        <em class="required-asterik">*</em>
-                    </label>
-                    <input id="captcha" class="form-control" placeholder="Captcha" name="captcha" type="password" value="" required>
-                </div>
-            </div>
-
-            <?php include "captcha.php" ?>
-
-            <div class="form-group" style="margin-bottom: 40px;">
-                <div class="col-sm-12">
-                    <input class="btn btn-default submit text-uppercase" type="button" onclick="sendContact()" value="Sign Up">
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-    <?php include "footer.php" ?>
+<?php include "footer.php" ?>
