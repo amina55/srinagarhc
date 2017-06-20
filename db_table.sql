@@ -1,3 +1,5 @@
+-- noinspection SqlNoDataSourceInspectionForFile
+
 
 /* client_order table */
 
@@ -27,7 +29,7 @@
 
 
   ALTER TABLE public.users
-      ADD COLUMN type character varying(30) NOT NULL default ‘applicant’;
+      ADD COLUMN type character varying(30) NOT NULL default 'applicant';
 
 
   ALTER TABLE public.client_order
