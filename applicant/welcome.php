@@ -1,17 +1,18 @@
 <?php
-include "admin_access.php";
+include "applicant_access.php";
 include "../layouts/master.php";
 include "../layouts/database_access.php";
 $pendingOrders = $disposedOrders = array();
 if (!$connection) {
     $message = "Connection Failed.";
 } else {
-    $query = "select * from client_order where order_status is NULL ";
+    $userId = $_SESSION['logged_in_user']['id'];
+    $query = "select * from client_order where user_id = $userId AND order_status is NULL ";
     $statement = $connection->prepare($query);
     $statement->execute();
     $pendingOrders = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-    $query = "select * from client_order where order_status is NOT NULL ";
+    $query = "select * from client_order where user_id = $userId AND order_status is NOT NULL ";
     $statement = $connection->prepare($query);
     $statement->execute();
     $pendingOrder = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -19,15 +20,19 @@ if (!$connection) {
 }
 ?>
 <div class="box">
+    <a href="send-order.php" class="btn btn-global btn-global-thick pull-right"> Apply for Certified Copy</a>
+
     <!------------------------------ Page Header -------------------------------->
     <div class="box-header">
         <ul class="nav nav-tabs">
             <li><a data-toggle="tab" href="#pending_table">Pending Order</a></li>
-            <li><a data-toggle="tab" href="#disposed_table">Disposed Order</a></li>
+            <li><a data-toggle="tab" href="#disposed_table">Processed Order</a></li>
         </ul>
+
     </div>
     <!------------------------------- Page Body --------------------------------->
     <div class="box-body">
+
         <?php
         if (!empty($_SESSION['alert_message'])) {
 
@@ -36,7 +41,7 @@ if (!$connection) {
             $_SESSION['alert_type'] = '';
             unset($_SESSION['alert_message']);
             unset($_SESSION['alert_type']);
-         } ?>
+        } ?>
 
         <div class="mt15">
             <div class="tab-content">
@@ -46,42 +51,23 @@ if (!$connection) {
                             <table class="table data-tables">
                                 <thead>
                                 <tr>
-                                    <th>Applicant Name</th>
                                     <th>Order Id</th>
-                                    <th>Case type</th>
                                     <th>Case No.</th>
-                                    <th>Case Year</th>
-                                    <th>Payment type</th>
                                     <th>Document type</th>
                                     <th>Document Date</th>
-                                    <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <?php foreach($pendingOrders as $pendingOrder) { $reason = $pendingOrder['applicant_doc_rejection_reason'] ?>
                                     <tr>
-                                        <td><?php echo $pendingOrder['applicant_name'] ?></td>
                                         <td><?php echo $pendingOrder['order_id'] ?></td>
-                                        <td><?php echo $pendingOrder['case_type'] ?></td>
-                                        <td>
-                                            <a href="" data-toggle="modal" data-target="#view-detail-modal" data-id="<?php echo $pendingOrder['id']; ?>" class="view-detail no-text-decoration" title="View Detail of Order">
-                                                <?php echo $pendingOrder['case_no'] ?>
-                                            </a>
+                                        <td><?php echo $pendingOrder['case_no'] ?>
+                                            <!--<a href="" data-toggle="modal" data-target="#view-detail-modal" data-id="<?php /*echo $pendingOrder['id']; */?>" class="view-detail no-text-decoration" title="View Detail of Order">
+                                                <?php /*echo $pendingOrder['case_no'] */?>
+                                            </a>-->
                                         </td>
-                                        <td><?php echo $pendingOrder['case_year'] ?></td>
-                                        <td><?php echo $pendingOrder['payment_type'] ?></td>
                                         <td><?php echo $pendingOrder['document_type'] ?></td>
                                         <td><?php echo date('d-m-Y', strtotime($pendingOrder['document_date'])) ?></td>
-                                        <td>
-                                            <?php if(empty($pendingOrder['order_status'])) { ?>
-                                                <a href="" data-toggle="modal" data-target="#approve-order-modal" data-id="<?php echo $pendingOrder['id']; ?>" class="approve-order no-text-decoration" title="Approve Order">
-                                                    <i class="fa fa-2x fa-check"></i>
-                                                </a>
-                                                <a href="" data-toggle="modal" data-target="#reject-order-modal" data-id="<?php echo $pendingOrder['id']; ?>" class="reject-order no-text-decoration" title="Reject Order">
-                                                    <i class="fa fa-2x fa-times"></i>
-                                                </a>
-                                            <?php } ?>
-                                        </td>
                                     </tr>
                                 <?php } ?>
                                 </tbody>
@@ -95,52 +81,40 @@ if (!$connection) {
                             <table class="table data-tables">
                                 <thead>
                                 <tr>
-                                    <th>Applicant Name</th>
                                     <th>Order Id</th>
-                                    <th>Case type</th>
                                     <th>Case No.</th>
-                                    <th>Case Year</th>
                                     <th>Case Status</th>
-                                    <th>Payment type</th>
                                     <th>Document type</th>
                                     <th>Document Date</th>
                                     <th>Document status</th>
+                                    <th>Upload Date</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <?php foreach($disposedOrders as $disposedOrder) { $reason = $disposedOrder['applicant_doc_rejection_reason'] ?>
                                     <tr>
-                                        <td><?php echo $disposedOrder['applicant_name'] ?></td>
                                         <td><?php echo $disposedOrder['order_id'] ?></td>
-                                        <td><?php echo $disposedOrder['case_type'] ?></td>
-                                        <td>
-                                            <a href="" data-toggle="modal" data-target="#view-detail-modal" data-id="<?php echo $disposedOrder['id']; ?>" class="view-detail no-text-decoration" title="View Detail of Order">
-                                                <?php echo $disposedOrder['case_no'] ?>
-                                            </a>
+                                        <td><?php echo $disposedOrder['case_no'] ?>
+                                            <!--<a href="" data-toggle="modal" data-target="#view-detail-modal" data-id="<?php /*echo $disposedOrder['id']; */?>" class="view-detail no-text-decoration" title="View Detail of Order">
+                                                <?php /*echo $disposedOrder['case_no'] */?>
+                                            </a>-->
                                         </td>
-                                        <td><?php echo $disposedOrder['case_year'] ?></td>
                                         <td><?php echo ($disposedOrder['order_status']) ? $disposedOrder['order_status'] : '---' ?></td>
-                                        <td><?php echo $disposedOrder['payment_type'] ?></td>
                                         <td><?php echo $disposedOrder['document_type'] ?></td>
                                         <td><?php echo date('d-m-Y', strtotime($disposedOrder['document_date'])) ?></td>
                                         <td><?php echo (!$disposedOrder['applicant_doc_status']) ? '---' : (($disposedOrder['applicant_doc_status'] == 'rejected') ?
                                                 "<a class='rejection-reason' data-reason='".$reason."' href='' data-toggle='modal' data-target='#view-rejection-reason-modal'> rejected </a>"
                                                 : $disposedOrder['applicant_doc_status']) ?>
                                         </td>
+                                        <td><?php echo ($disposedOrder['upload_date']) ? date('d-m-Y', strtotime($disposedOrder['upload_date'])) : 'not uploaded' ?></td>
+
                                         <td>
-                                            <?php if(empty($disposedOrder['order_status'])) { ?>
-                                                <a href="" data-toggle="modal" data-target="#approve-order-modal" data-id="<?php echo $disposedOrder['id']; ?>" class="approve-order no-text-decoration" title="Approve Order">
-                                                    <i class="fa fa-2x fa-check"></i>
-                                                </a>
-                                                <a href="" data-toggle="modal" data-target="#reject-order-modal" data-id="<?php echo $disposedOrder['id']; ?>" class="reject-order no-text-decoration" title="Reject Order">
-                                                    <i class="fa fa-2x fa-times"></i>
-                                                </a>
-                                            <?php } else {
-                                                if($disposedOrder['order_status'] == 'approved' && !$disposedOrder['applicant_doc_status'] && $disposedOrder['upload_date'] > date('Y-m-d')) {
-                                                    echo "<a class='change-upload-date-button' href='' data-id = ".$disposedOrder['id']." data-upload=".strtotime($disposedOrder['upload_date'])." data-toggle='modal' data-target='#change-upload-date-modal'><i class='fa fa-2x fa-calendar'></i></a>";
+                                            <?php
+                                                if($disposedOrder['order_status'] == 'approved' && !$disposedOrder['applicant_doc_status'] && $disposedOrder['upload_date'] <= date('Y-m-d')) {
+                                                    echo "<a class='' href='../uploads/".$disposedOrder['upload_document']."'  download='".$disposedOrder['order_id']."'><i class='fa fa-download'></i></a>";
                                                 }
-                                            } ?>
+                                            ?>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -312,7 +286,7 @@ if (!$connection) {
         $('#upload_date_id').val(id);
         $( "#upload_date" ).datepicker( "option", "maxDate", newDate );
     });
-    
+
     $('.view-detail').click(function () {
         var id = $(this).data('id');
         jQuery.ajax({

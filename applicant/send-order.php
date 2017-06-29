@@ -1,4 +1,5 @@
 <?php
+include "applicant_access.php";
 $message = '';
 $alertType = 'alert-danger';
 include '../layouts/database_access.php';
@@ -19,7 +20,7 @@ if (!$connection) {
 
             $query = "select case_type, type_name from case_type_t where case_type = :case_type";
             $statement = $connection->prepare($query);
-            $statement->execute(['case_type' => $caseType]);
+            $statement->execute(array('case_type' => $caseType));
             $caseTypeName = $statement->fetch();
             $orderId = $caseTypeName['type_name'].'-'.$caseNo.'-'.$caseYear.'-'.str_pad(rand(0, 999), '3', '0', STR_PAD_LEFT);
 
@@ -41,8 +42,9 @@ if (!$connection) {
                     }
 
                     if($id) {
-                        $insertQuery = "INSERT INTO client_order (applicant_name, case_type, case_no, case_year, payment_type, document_type, document_date, order_id, licence_no) " .
-                            "VALUES  ('$name', $caseType, $caseNo, $caseYear, '$paymentType', '$documentType', '$documentDate', '$orderId', '$licenceNo')";
+                        $userId = $_SESSION['logged_in_user']['id'];
+                        $insertQuery = "INSERT INTO client_order (applicant_name, case_type, case_no, case_year, payment_type, document_type, document_date, order_id, licence_no, user_id) " .
+                            "VALUES  ('$name', $caseType, $caseNo, $caseYear, '$paymentType', '$documentType', '$documentDate', '$orderId', '$licenceNo', $userId)";
 
                         $result = $connection->exec($insertQuery);
                         if (empty($result)) {
@@ -75,8 +77,8 @@ include "../layouts/mystyle-master.php";
 <div class="row main">
 
     <div class="main-login">
-        <a href="view-order.php" class="btn btn-lg large-button"> View Order Detail</a>
-      <!--  <a href="welcome.php" class="btn btn-lg large-button"> Back to Detail</a>-->
+        <!--<a href="view-order.php" class="btn btn-lg large-button"> View Order Detail</a>-->
+        <a href="welcome.php" class="btn btn-lg large-button"> Back to Detail</a>
 
         <br>
         <div class="main-center">
@@ -192,7 +194,7 @@ include "../layouts/mystyle-master.php";
 
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <input class="btn btn-lg btn-block large-button" type="submit" value="Save">
+                        <input class="btn btn-lg btn-block large-button text-uppercase" type="submit" value="Send Order">
                     </div>
                 </div>
             </form>

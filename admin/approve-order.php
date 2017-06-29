@@ -10,7 +10,7 @@ try {
         $orderId = $_POST['order_id'];
         $uploadDate = !empty($_POST['upload_date']) ? $_POST['upload_date'] : date('Y-m-d', strtotime('+1 day'));
 
-        /*if ($_FILES['upload_document']['error'] !== UPLOAD_ERR_OK) {
+        if ($_FILES['upload_document']['error'] !== UPLOAD_ERR_OK) {
             $message = "Upload failed with error " . $_FILES['upload_document']['error'];
         } else {
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -22,13 +22,13 @@ try {
             } else {
                 $message = "Only pdf file is allowed.";
             }
-        }*/
-        $query = "update client_order set order_status = 'approved', paid_amount = $amount, upload_date = '$uploadDate' "./*", upload_document = '$uploadDocument' ".*/
-            "where id = $orderId";
+        }
+        $query = "update client_order set order_status = 'approved', paid_amount = $amount, upload_date = '$uploadDate', ".
+            "upload_document = '$uploadDocument' where id = $orderId";
 
         $result = $connection->exec($query);
         if($result) {
-            $message = "Successfully Approved Order.";
+            $message = "Successfully Uploaded and Approved Order.";
             $_SESSION['alert_type'] = "success";
         } else {
             $message = "Applicant Order not accepted. Please Try agian!";

@@ -7,7 +7,7 @@ if (!$connection) {
     $message = "Connection Failed.";
 } else {
     $userId = $_SESSION['logged_in_user']['id'];
-    $query = "select * from users where type = 'admin'";
+    $query = "select * from musers where type = 'admin'";
     $statement = $connection->prepare($query);
     $statement->execute();
     $users = $statement->fetchAll(PDO::FETCH_ASSOC);
