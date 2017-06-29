@@ -20,7 +20,7 @@ if (!$connection) {
 
             $query = "select case_type, type_name from case_type_t where case_type = :case_type";
             $statement = $connection->prepare($query);
-            $statement->execute(['case_type' => $caseType]);
+            $statement->execute(array('case_type' => $caseType));
             $caseTypeName = $statement->fetch();
             $orderId = $caseTypeName['type_name'].'-'.$caseNo.'-'.$caseYear.'-'.str_pad(rand(0, 999), '3', '0', STR_PAD_LEFT);
 

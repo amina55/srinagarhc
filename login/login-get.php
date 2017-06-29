@@ -16,7 +16,7 @@ try{
         if (!$connection) {
             $message = "Connection Failed.";
         } else {
-            $stmt = $connection->prepare('SELECT id, name, username, type FROM users WHERE username = :username AND password = :password');
+            $stmt = $connection->prepare('SELECT id, name, username, type FROM musers WHERE username = :username AND password = :password');
             $stmt->execute(array('username' => $userName, 'password' => hash('sha512', $password)));
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             if (empty($user)) {

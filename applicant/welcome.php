@@ -2,7 +2,7 @@
 include "applicant_access.php";
 include "../layouts/master.php";
 include "../layouts/database_access.php";
-$pendingOrders = $disposedOrders = [];
+$pendingOrders = $disposedOrders = array();
 if (!$connection) {
     $message = "Connection Failed.";
 } else {
