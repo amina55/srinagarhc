@@ -23,7 +23,7 @@ try{
                         print "<div class='alert alert-danger'>Password length should be 6-20 characters and contain at-least one digit, upper or lowercase letter and at-least one special character.</div>";
                     } else {
                         $repeat = '';
-                        $query = "select * from users where username = '$username' or email = '$email'";
+                        $query = "select * from musers where username = '$username' or email = '$email'";
                         $users = $connection->query($query);
                         foreach ($users as $user) {
                             if($user['email'] == $email) {
@@ -40,7 +40,7 @@ try{
                             }
                             if($userType) {
                                 $password = hash('sha512', $password);
-                                $insertQuery = "INSERT INTO users (name, username, email, password, type) VALUES  ('$name', '$username', '$email', '$password', '$userType')";
+                                $insertQuery = "INSERT INTO musers (name, username, email, password, type) VALUES  ('$name', '$username', '$email', '$password', '$userType')";
                                 $result = $connection->exec($insertQuery);
                                 if (!$result) {
                                     print "<div class='alert alert-danger'>Error in User Sign up</div>";

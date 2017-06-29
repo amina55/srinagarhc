@@ -1,9 +1,9 @@
 <?php
 
-$dbuser = 'Mac';
-$dbpass = 'root';
-$dbhost = 'localhost';
-$dbname='srinagarhc';
+$dbname='jammudb';
+	$dbhost='localhost';
+	$dbuser = "postgres";
+	$dbpass = "";
 
 try {
     $connection = new PDO("pgsql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
