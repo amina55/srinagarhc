@@ -1,4 +1,5 @@
 <?php
+include "applicant_access.php";
 include "../layouts/database_access.php";
 try {
     if (!$connection) {
