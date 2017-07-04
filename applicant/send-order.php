@@ -12,7 +12,7 @@ if (!$connection) {
             $caseType = trim($_POST['case_type']);
             $caseNo = trim($_POST['case_no']);
             $caseYear = trim($_POST['case_year']);
-            $documentType = trim($_POST['document_type']);
+            $documentType = implode(",", $_POST['document_type']);
             $documentDate = trim($_POST['document_date']);
             $paymentType = trim($_POST['payment_type']);
             $licenceNo  = '';
@@ -63,7 +63,7 @@ if (!$connection) {
     $query = "select case_type, type_name from case_type_t";
     $caseTypes = $connection->query($query);
 }
-include "../layouts/mystyle-master.php";
+include "../login/master.php";
 ?>
 <script>
     $( function() {
@@ -149,7 +149,7 @@ include "../layouts/mystyle-master.php";
                             Document type
                             <em class="required-asterik">*</em>
                         </label>
-                        <select class="form-control" name="document_type">
+                        <select class="form-control" name="document_type[]" multiple>
                             <option value="petition_copy">Petition copy</option>
                             <option value="writ">Writ</option>
                             <option value="objection">Objection</option>
