@@ -41,9 +41,11 @@ if (!$connection) {
                     }
 
                     if($id) {
-                        $insertQuery = "INSERT INTO client_order (applicant_name, case_type, case_no, case_year, payment_type, document_type, document_date, order_id, licence_no) " .
-                            "VALUES  ('$name', $caseType, $caseNo, $caseYear, '$paymentType', '$documentType', '$documentDate', '$orderId', '$licenceNo')";
+                        $currentDate = date('m/d/Y');
+                        $insertQuery = "INSERT INTO client_order (applicant_name, case_type, case_no, case_year, payment_type, document_type, document_date, order_id, licence_no, apply_date) " .
+                            "VALUES  ('$name', $caseType, $caseNo, $caseYear, '$paymentType', '$documentType', '$documentDate', '$orderId', '$licenceNo', '$currentDate')";
 
+                       // echo $insertQuery;
                         $result = $connection->exec($insertQuery);
                         if (empty($result)) {
                             $message = "Error in Sending Order";
@@ -149,6 +151,8 @@ include "../login/master.php";
                             Document type
                             <em class="required-asterik">*</em>
                         </label>
+
+                        <input type="checkbox" name="document_type">
                         <select class="form-control" name="document_type[]" multiple>
                             <option value="petition_copy">Petition copy</option>
                             <option value="writ">Writ</option>
