@@ -33,11 +33,22 @@ if (!$connection) {
                     }
                 }
                 if(!$message) {
-                    $query = "select fil_no from civil_t where fil_no = $caseNo and filcase_type = $caseType  and fil_year = $caseYear";
                     $id = '';
-                    $details = $connection->query($query);
-                    foreach ($details as $detail) {
+                    $query = "select fil_no from civil_t where fil_no = $caseNo and filcase_type = $caseType  and fil_year = $caseYear";
+                    $statement = $connection->prepare($query);
+                    $statement->execute();
+                    $detail = $statement->fetch();
+
+                    if(!empty($detail['fil_no'])) {
                         $id = $detail['fil_no'];
+                    } else {
+                        $query = "select fil_no from civil_t_a where fil_no = $caseNo and filcase_type = $caseType  and fil_year = $caseYear";
+                        $statement = $connection->prepare($query);
+                        $statement->execute();
+                        $detail = $statement->fetch();
+                        if(!empty($detail['fil_no'])) {
+                            $id = $detail['fil_no'];
+                        }
                     }
 
                     if($id) {
@@ -45,7 +56,6 @@ if (!$connection) {
                         $insertQuery = "INSERT INTO client_order (applicant_name, case_type, case_no, case_year, payment_type, document_type, document_date, order_id, licence_no, apply_date) " .
                             "VALUES  ('$name', $caseType, $caseNo, $caseYear, '$paymentType', '$documentType', '$documentDate', '$orderId', '$licenceNo', '$currentDate')";
 
-                       // echo $insertQuery;
                         $result = $connection->exec($insertQuery);
                         if (empty($result)) {
                             $message = "Error in Sending Order";
@@ -131,7 +141,7 @@ include "../login/master.php";
                             Case Year
                             <em class="required-asterik">*</em>
                         </label>
-                        <input class="form-control" type="number" placeholder="Case Year" name="case_year" min="1950" max="<?php echo date('Y') ?>">
+                        <input class="form-control" type="number" placeholder="Case Year" name="case_year" min="1700" max="<?php echo date('Y') ?>">
                         <span class="error-message"></span>
                     </div>
                 </div>
@@ -152,19 +162,18 @@ include "../login/master.php";
                             <em class="required-asterik">*</em>
                         </label>
 
-                        <input type="checkbox" name="document_type">
-                        <select class="form-control" name="document_type[]" multiple>
-                            <option value="petition_copy">Petition copy</option>
-                            <option value="writ">Writ</option>
-                            <option value="objection">Objection</option>
-                            <option value="vakaltnama">Vakaltnama</option>
-                            <option value="order">Order</option>
-                            <option value="judgement">Judgement</option>
-                            <option value="CMP">CMP</option>
-                            <option value="reply">Reply</option>
-                            <option value="rejoinder">Rejoinder</option>
-                            <option value="affidavit">Affidavit</option>
-                        </select>
+                        <br>
+                        <input type="checkbox" id="all_doc_type">All<br>
+                        <input type="checkbox" name="document_type[]" value="petition_copy">Petition copy<br>
+                            <input type="checkbox" name="document_type[]" value="writ">Writ<br>
+                            <input type="checkbox" name="document_type[]" value="objection">Objection<br>
+                            <input type="checkbox" name="document_type[]" value="vakaltnama">Vakaltnama<br>
+                            <input type="checkbox" name="document_type[]" value="order">Order<br>
+                            <input type="checkbox" name="document_type[]" value="judgement">Judgement<br>
+                            <input type="checkbox" name="document_type[]" value="CMP">CMP<br>
+                            <input type="checkbox" name="document_type[]" value="reply">Reply<br>
+                            <input type="checkbox" name="document_type[]" value="rejoinder">Rejoinder<br>
+                            <input type="checkbox" name="document_type[]" value="affidavit">Affidavit<br>
                         <span class="error-message"></span>
                     </div>
                 </div>
@@ -214,6 +223,11 @@ include "../login/master.php";
             } else {
                 $('#licence_no_div').hide();
             }
+        });
+
+        $('#all_doc_type').click(function () {
+            var value = this.checked;
+            $('[name^=document_type]').attr('checked', value);
         });
     </script>
     <?php include "../login/footer.php" ?>
