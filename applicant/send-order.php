@@ -1,77 +1,13 @@
 <?php
-$message = '';
-$alertType = 'alert-danger';
+session_start();
+$message = !empty($_SESSION['message']) ? $_SESSION['message'] : '';
+$alertType = !empty($_SESSION['alert_type']) ? $_SESSION['alert_type'] : '';
+$_SESSION['message'] = '';
+$_SESSION['alert_type'] = '';
 include '../layouts/database_access.php';
 if (!$connection) {
     $message = "Connection Failed.";
 } else {
-
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        try {
-            $name = trim($_POST['applicant_name']);
-            $caseType = trim($_POST['case_type']);
-            $caseNo = trim($_POST['case_no']);
-            $caseYear = trim($_POST['case_year']);
-            $documentType = implode(",", $_POST['document_type']);
-            $documentDate = trim($_POST['document_date']);
-            $paymentType = trim($_POST['payment_type']);
-            $licenceNo  = '';
-
-            $query = "select case_type, type_name from case_type_t where case_type = :case_type";
-            $statement = $connection->prepare($query);
-            $statement->execute(array('case_type' => $caseType));
-            $caseTypeName = $statement->fetch();
-            $orderId = $caseTypeName['type_name'].'-'.$caseNo.'-'.$caseYear.'-'.str_pad(rand(0, 999), '3', '0', STR_PAD_LEFT);
-
-            if (empty($name) || empty($caseYear) || empty($caseNo) || empty($caseType) || empty($documentType) || empty($paymentType) || empty($documentDate)) {
-                $message = "Required Parameter is missing";
-            } else {
-                if($paymentType == 'free') {
-                    $licenceNo = trim($_POST['licence_no']);
-                    if(!$licenceNo) {
-                        $message = "Licence Number is required for free payment.";
-                    }
-                }
-                if(!$message) {
-                    $id = '';
-                    $query = "select fil_no from civil_t where fil_no = $caseNo and filcase_type = $caseType  and fil_year = $caseYear";
-                    $statement = $connection->prepare($query);
-                    $statement->execute();
-                    $detail = $statement->fetch();
-
-                    if(!empty($detail['fil_no'])) {
-                        $id = $detail['fil_no'];
-                    } else {
-                        $query = "select fil_no from civil_t_a where fil_no = $caseNo and filcase_type = $caseType  and fil_year = $caseYear";
-                        $statement = $connection->prepare($query);
-                        $statement->execute();
-                        $detail = $statement->fetch();
-                        if(!empty($detail['fil_no'])) {
-                            $id = $detail['fil_no'];
-                        }
-                    }
-
-                    if($id) {
-                        $currentDate = date('m/d/Y');
-                        $insertQuery = "INSERT INTO client_order (applicant_name, case_type, case_no, case_year, payment_type, document_type, document_date, order_id, licence_no, apply_date) " .
-                            "VALUES  ('$name', $caseType, $caseNo, $caseYear, '$paymentType', '$documentType', '$documentDate', '$orderId', '$licenceNo', '$currentDate')";
-
-                        $result = $connection->exec($insertQuery);
-                        if (empty($result)) {
-                            $message = "Error in Sending Order";
-                        } else {
-                            $message = "Your record is successfully entered. Please note this Order Id to view your order data. Order Id is : " . $orderId;
-                            $alertType = 'alert-success';
-                        }
-                    } else {
-                        $message = "There is no record of this case, kindly request for a valid case.";
-                    }
-                }
-            }
-        } catch (Exception $e) {
-            $message = "Error : " . $e->getMessage();
-        }
-    }
     $query = "select case_type, type_name from case_type_t";
     $caseTypes = $connection->query($query);
 }
@@ -88,12 +24,10 @@ include "../login/master.php";
 
     <div class="main-login">
         <a href="view-order.php" class="btn btn-lg large-button"> View Order Detail</a>
-      <!--  <a href="welcome.php" class="btn btn-lg large-button"> Back to Detail</a>-->
-
         <br>
         <div class="main-center">
 
-            <form method="POST" action="" accept-charset="UTF-8" class="form-horizontal form-login">
+            <form method="POST" action="order-detail.php" accept-charset="UTF-8" class="form-horizontal form-login">
                 <?php if ($message) { ?>
                     <div class="alert <?php echo $alertType ?>">
                         <?php echo $message?>
@@ -211,7 +145,6 @@ include "../login/master.php";
             </form>
         </div>
     </div>
-
 
     <script>
         $('#licence_no_div').hide();

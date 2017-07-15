@@ -85,12 +85,28 @@ input::-webkit-input-placeholder {
     box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
 
 }
+.main-center2{
+    margin: 0 auto;
+    text-align: left;
+    max-width: 650px;
+    padding: 10px 40px;
+    background: #d3e8f3;
+    text-shadow: none;
+    -webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+    -moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+    box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+
+}
 span.input-group-addon i {
     color: #2da237;
     font-size: 17px;
 }
-
 .page-header {
     margin: 20px 0 20px;
     border-bottom: 1px solid #2da237;
+}
+.left-align-label {
+    text-align: left;
+    font-weight: bold;
+    margin-top: 10px;
 }

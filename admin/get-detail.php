@@ -19,19 +19,19 @@ try {
                 $licenceNo = $order['licence_no'];
                 $orderId = $order['id'];
 
-                $query = "select pet_name, res_name, pet_adv, res_adv from civil_t where fil_no = $caseNo and " .
-                    " filcase_type = $caseType  and fil_year = $caseYear";
+                $query = "select fil_no, pet_name, res_name, pet_adv, res_adv from civil_t where fil_no = $caseNo and filcase_type = $caseType  and fil_year = $caseYear";
+                $statement = $connection->prepare($query);
+                $statement->execute();
+                $detail = $statement->fetch();
 
-                $petName = $resAdv = $resName = $petAdv = '';
-                $details = $connection->query($query);
-                if($details) {
-                    foreach ($details as $detail) {
-                        $petName = $detail['pet_name'];
-                        $resName = $detail['res_name'];
-                        $petAdv = $detail['pet_adv'];
-                        $resAdv = $detail['res_adv'];
-                    }
-                } else {
+                if(empty($detail)) {
+                    $query = "select fil_no, pet_name, res_name, pet_adv, res_adv from civil_t_a where fil_no = $caseNo and filcase_type = $caseType  and fil_year = $caseYear";
+                    $statement = $connection->prepare($query);
+                    $statement->execute();
+                    $detail = $statement->fetch();
+                }
+
+                if(empty($detail)) {
                     $message = "There is no record for this order.";
                 }
             }
@@ -54,7 +54,7 @@ try {
             Petitioner name
         </label>
         <label class="col-sm-8 text-left bold">
-            <?php echo $petName ?>
+            <?php echo !empty($detail['pet_name']) ? $detail['pet_name'] : '(not available)'; ?>
         </label>
     </div>
 
@@ -63,7 +63,7 @@ try {
             Petitioner Advocate
         </label>
         <label class="col-sm-8 text-left bold">
-            <?php echo $petAdv ?>
+            <?php echo !empty($detail['pet_adv']) ? $detail['pet_adv'] : '(not available)'; ?>
         </label>
     </div>
 
@@ -72,7 +72,7 @@ try {
             Respondent name
         </label>
         <label class="col-sm-8 text-left bold">
-            <?php echo $resName ?>
+            <?php echo !empty($detail['res_name']) ? $detail['res_name'] : '(not available)'; ?>
         </label>
     </div>
 
@@ -81,7 +81,7 @@ try {
             Respondent Advocate
         </label>
         <label class="col-sm-8 text-left bold">
-            <?php echo $resAdv ?>
+            <?php echo !empty($detail['res_adv']) ? $detail['res_adv'] : '(not available)'; ?>
         </label>
     </div>
 
