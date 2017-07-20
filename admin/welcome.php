@@ -33,8 +33,9 @@ if (!$connection) {
         <ul class="nav nav-tabs">
             <li <?php echo ($applyDate) ? '' : 'class="active"';?> ><a data-toggle="tab" href="#pending_table">Pending Order</a></li>
             <li><a data-toggle="tab" href="#disposed_table">Disposed Order</a></li>
-            <li <?php echo ($applyDate) ? 'class="active"' : '';?> ><a data-toggle="tab" href="#search_order">Search Order</a></li>
-        </ul>
+            <!--<li <?php /*echo ($applyDate) ? 'class="active"' : '';*/?> ><a data-toggle="tab" href="#search_order">Search Order</a></li>
+-->        </ul>
+        <a href="search.php" class="btn btn-global btn-global-thick pull-right" style="margin-top: -43px">Search Order</a>
     </div>
     <!------------------------------- Page Body --------------------------------->
     <div class="box-body">
@@ -318,16 +319,6 @@ if (!$connection) {
                             <input class="form-control" type="number" name="paid_amount" min="0" required>
                         </div>
                     </div>
-
-                    <!--<div class="form-group col-sm-12">
-                        <label class="col-sm-4 control-label text-right">
-                            Upload Document
-                            <em class="required-asterik">*</em>
-                        </label>
-                        <div class="col-sm-8 text-left bold">
-                            <input class="form-control" type="file" name="upload_document" accept="application/pdf" required>
-                        </div>
-                    </div>-->
 
                     <div class="form-group col-sm-12">
                         <label class="col-sm-4 control-label text-right">

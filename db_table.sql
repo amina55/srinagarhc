@@ -52,3 +52,11 @@
 
   ﻿ALTER TABLE public.client_order
     ADD COLUMN apply_date date;
+
+
+  ﻿ALTER TABLE public.client_order
+    ADD COLUMN fill_no integer;
+
+  ALTER TABLE public.client_order
+    ADD COLUMN fill_year smallint;
+
