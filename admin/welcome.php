@@ -2,7 +2,7 @@
 include "admin_access.php";
 include "../layouts/master.php";
 include "../layouts/database_access.php";
-$pendingOrders = $disposedOrders = [];
+$pendingOrders = $disposedOrders = array();
 if (!$connection) {
     $message = "Connection Failed.";
 } else {
@@ -16,7 +16,7 @@ if (!$connection) {
     $statement->execute();
     $disposedOrders = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-    $searchOrders = [];
+    $searchOrders = array();
     $applyDate = !empty($_GET['apply_date']) ? $_GET['apply_date'] : '';
     $tableHeading = $applyDate.' Report';
     if($applyDate) {

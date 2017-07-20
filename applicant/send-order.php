@@ -34,16 +34,6 @@ include "../login/master.php";
                     </div>
                 <?php } ?>
 
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <label class="control-label mb10" for="applicant_name">
-                            Applicant Name
-                            <em class="required-asterik">*</em>
-                        </label>
-                        <input id="applicant_name" class="form-control" placeholder="Applicant Name" name="applicant_name" type="text" value="" required>
-                        <span class="error-message"></span>
-                    </div>
-                </div>
                 <div class="form-group ">
                     <div class="col-sm-12">
                         <label class="control-label mb10" for="case_type">
@@ -137,6 +127,17 @@ include "../login/master.php";
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <label class="control-label mb10" for="applicant_name">
+                            Applicant Name
+                            <em class="required-asterik">*</em>
+                        </label>
+                        <input id="applicant_name" class="form-control" placeholder="Applicant Name" name="applicant_name" type="text" value="" required>
+                        <span class="error-message"></span>
+                    </div>
+                </div>
+                
                 <div class="form-group">
                     <div class="col-sm-12">
                         <input class="btn btn-lg btn-block large-button" type="submit" value="Save">
