@@ -15,6 +15,9 @@ if (!$connection) {
         $applyStartDate = trim($_POST['applied_date']);
         $applyEndDate = trim($_POST['date_to']);
 
+        $startYear = trim($_POST['start_year']);
+        $endYear = trim($_POST['end_year']);
+
         $filingNo = trim($_POST['filling_no']);
         $filingYear = trim($_POST['filling_year']);
 
@@ -24,7 +27,7 @@ if (!$connection) {
 
         $appliedBy = trim($_POST['applied_by']);
 
-        $whereQuery = $finalQuery = $applyDateQuery = '';
+        $whereQuery = $finalQuery = $applyDateQuery = $yearQuery = '';
         if($applyStartDate || $applyEndDate) {
             if($applyStartDate && $applyEndDate) {
                 if ($applyStartDate > $applyEndDate) {
@@ -41,6 +44,25 @@ if (!$connection) {
             }
             if($applyDateQuery) {
                 $whereQuery .= $applyDateQuery." and";
+            }
+        }
+
+        if($startYear || $endYear) {
+            if($startYear && $endYear) {
+                if ($startYear > $endYear) {
+                    $message = "Start Year should be less than End Year.";
+                    $displayTable = false;
+                } else {
+                    $yearQuery = " case_year between $startYear and $endYear ";
+                    $tableHeading .= 'Year ('.$startYear.'-'.$endYear.') ,';
+                }
+            } else {
+                $year = ($startYear) ? $startYear : $endYear;
+                $yearQuery = "case_year = $year";
+                $tableHeading .= 'Year ('.$year.'),';
+            }
+            if($yearQuery) {
+                $whereQuery .= $yearQuery." and";
             }
         }
 
@@ -121,6 +143,20 @@ if (!$connection) {
                         <label class="col-sm-2"> Date to : </label>
                         <div class="col-sm-4">
                             <input placeholder="Date to" class="apply_date_format form-control" type="text" name="date_to">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="mt20 col-sm-12">
+                        <label class="col-sm-2"> Start Year </label>
+                        <div class="col-sm-4">
+                            <input placeholder="Start Year" class="form-control" type="number" name="start_year" min="1700" max="<?php echo $currentYear; ?>">
+                        </div>
+
+                        <label class="col-sm-2"> End Year </label>
+                        <div class="col-sm-4">
+                            <input placeholder="End Year" class="form-control" type="number" name="end_year" min="1700" max="<?php echo $currentYear; ?>">
                         </div>
                     </div>
                 </div>
