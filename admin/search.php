@@ -1,5 +1,4 @@
 <?php
-include "admin_access.php";
 include "../layouts/master.php";
 include "../layouts/database_access.php";
 $pendingOrders = $disposedOrders = array();
@@ -96,7 +95,7 @@ if (!$connection) {
     <!------------------------------ Page Header -------------------------------->
     <div class="box-header">
         <h3>Search Order</h3>
-        <a href="welcome.php" class="btn btn-global btn-global-thick pull-right" style="margin-top: -43px">View Order</a>
+            <!--<a href="welcome.php" class="btn btn-global btn-global-thick pull-right" style="margin-top: -43px">View Order</a>-->
     </div>
     <!------------------------------- Page Body --------------------------------->
     <div class="box-body">
