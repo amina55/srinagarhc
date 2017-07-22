@@ -30,7 +30,14 @@ if (!$connection) {
             if($paymentType == 'free') {
                 $licenceNo = trim($_POST['licence_no']);
                 if(!$licenceNo) {
-                    $message = "Licence Number is required for free payment.";
+                    $message = "Officer Detail is required for free payment.";
+                } elseif($licenceNo == 'Other') {
+                    $otherDetail = $_POST['other_detail'];
+                    if(!$otherDetail) {
+                        $message = "Officer Detail is required for free payment. So please mention Other Detail";
+                    } else {
+                        $licenceNo = $otherDetail.' (Other)';
+                    }
                 }
             }
             if(!$message) {

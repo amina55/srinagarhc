@@ -48,7 +48,7 @@
   VALUES ('super_admin', 'super_admin', 'super.admin@gmail.com', '32e9acac86bc621ff2f792be4d0035388ef6b466a3676166085bd38ea6c8c209c3d4decd0abf21daed6e6037039d60f6d52819591bc6e92621849917fefd37d3', 'super-admin');
 
 
-/* add new column apply date in orders table*/
+/* add new columns in client_order table*/
 
   ﻿ALTER TABLE public.client_order
     ADD COLUMN apply_date date;
@@ -60,3 +60,12 @@
   ALTER TABLE public.client_order
     ADD COLUMN fill_year smallint;
 
+
+  ALTER TABLE public.client_order
+    ADD COLUMN lapsed_reason text;
+
+  ALTER TABLE public.client_order
+    ADD COLUMN issued_date date;
+
+  ﻿ALTER TABLE public.client_order
+    ADD COLUMN apply_year smallint NOT NULL default 2017;

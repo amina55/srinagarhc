@@ -52,12 +52,12 @@ if (!$connection) {
                     $message = "Start Year should be less than End Year.";
                     $displayTable = false;
                 } else {
-                    $yearQuery = " case_year between $startYear and $endYear ";
+                    $yearQuery = " apply_year between $startYear and $endYear ";
                     $tableHeading .= 'Year ('.$startYear.'-'.$endYear.') ,';
                 }
             } else {
                 $year = ($startYear) ? $startYear : $endYear;
-                $yearQuery = "case_year = $year";
+                $yearQuery = "apply_year = $year";
                 $tableHeading .= 'Year ('.$year.'),';
             }
             if($yearQuery) {

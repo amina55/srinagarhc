@@ -121,10 +121,27 @@ include "../login/master.php";
                 <div id="licence_no_div" class="form-group">
                     <div class="col-sm-12">
                         <label class="control-label mb10" for="licence_no">
-                            Licence No.
+                            Officer Type
                             <em class="required-asterik">*</em>
                         </label>
-                        <input id="licence_no" class="form-control" placeholder="Mention Lawyer Licence No. here" name="licence_no" type="text" value="">
+
+                        <select class="form-control" id="licence_no" name="licence_no">
+                            <option value="Procetuting Officer">Procetuting Officer</option>
+                            <option value="Government Advocate">Government Advocate</option>
+                            <option value="Conviction">Conviction</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span class="error-message"></span>
+                    </div>
+                </div>
+
+                <div id="others_div" class="form-group">
+                    <div class="col-sm-12">
+                        <label class="control-label mb10" for="licence_no">
+                            Other Detail
+                            <em class="required-asterik">*</em>
+                        </label>
+                        <input id="other_detail" class="form-control" placeholder="Mention Other here" name="other_detail" type="text" value="">
                         <span class="error-message"></span>
                     </div>
                 </div>
@@ -151,6 +168,8 @@ include "../login/master.php";
 
     <script>
         $('#licence_no_div').hide();
+        $('#others_div').hide();
+
 
         $('#payment_type').change(function () {
             var payment_type = $(this).val();
@@ -158,6 +177,15 @@ include "../login/master.php";
                 $('#licence_no_div').show();
             } else {
                 $('#licence_no_div').hide();
+            }
+        });
+
+        $('#licence_no').change(function () {
+            var other = $(this).val();
+            if(other == 'Other') {
+                $('#others_div').show();
+            } else {
+                $('#others_div').hide();
             }
         });
 

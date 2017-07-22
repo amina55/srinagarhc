@@ -2,7 +2,7 @@
 include "admin_access.php";
 include "../layouts/master.php";
 include "../layouts/database_access.php";
-$pendingOrders = $disposedOrders = array();
+$pendingOrders = $inTransitOrders = array();
 if (!$connection) {
     $message = "Connection Failed.";
 } else {
@@ -11,30 +11,34 @@ if (!$connection) {
     $statement->execute();
     $pendingOrders = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-    $query = "select * from client_order where order_status is NOT NULL ";
+    $query = "select * from client_order where order_status in ('approved', 'lapsed')";
     $statement = $connection->prepare($query);
     $statement->execute();
-    $disposedOrders = $statement->fetchAll(PDO::FETCH_ASSOC);
+    $inTransitOrders = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-    $searchOrders = array();
-    $applyDate = !empty($_GET['apply_date']) ? $_GET['apply_date'] : '';
-    $tableHeading = $applyDate.' Report';
-    if($applyDate) {
-        $query = "select * from client_order where apply_date = '$applyDate'";
-        $statement = $connection->prepare($query);
-        $statement->execute();
-        $searchOrders = $statement->fetchAll(PDO::FETCH_ASSOC);
-    }
+
+    $query = "select * from client_order where order_status = 'rejected'";
+    $statement = $connection->prepare($query);
+    $statement->execute();
+    $rejectedOrders = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    $query = "select * from client_order where order_status = 'issued'";
+    $statement = $connection->prepare($query);
+    $statement->execute();
+    $issuedOrders = $statement->fetchAll(PDO::FETCH_ASSOC);
+
 }
 ?>
 <div class="box">
     <!------------------------------ Page Header -------------------------------->
     <div class="box-header">
         <ul class="nav nav-tabs">
-            <li <?php echo ($applyDate) ? '' : 'class="active"';?> ><a data-toggle="tab" href="#pending_table">Pending Order</a></li>
-            <li><a data-toggle="tab" href="#disposed_table">Disposed Order</a></li>
-            <!--<li <?php /*echo ($applyDate) ? 'class="active"' : '';*/?> ><a data-toggle="tab" href="#search_order">Search Order</a></li>
--->        </ul>
+            <li class="active" ><a data-toggle="tab" href="#pending_table">Pending Order</a></li>
+            <li><a data-toggle="tab" href="#in_transit_table">In Transit Order</a></li>
+            <li><a data-toggle="tab" href="#rejected_table">Rejected Order</a></li>
+            <li><a data-toggle="tab" href="#issued_table">Issued Order</a></li>
+
+        </ul>
         <a href="search.php" class="btn btn-global btn-global-thick pull-right" style="margin-top: -43px">Search Order</a>
     </div>
     <!------------------------------- Page Body --------------------------------->
@@ -51,7 +55,7 @@ if (!$connection) {
 
         <div class="mt15">
             <div class="tab-content">
-                <div id="pending_table" class="tab-pane fade in <?php echo ($applyDate) ? '' : 'active'?>">
+                <div id="pending_table" class="tab-pane fade in active">
                     <div class="visible-block sorted-records-wrapper sorted-records">
                         <div class="table-responsive">
                             <table class="table data-tables">
@@ -62,14 +66,12 @@ if (!$connection) {
                                     <th>Case No.</th>
                                     <th>Case Year</th>
                                     <th>Payment type</th>
-                                    <th>Document type</th>
-                                    <th>Document Date</th>
                                     <th>Apply Date</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <?php foreach($pendingOrders as $pendingOrder) { $reason = $pendingOrder['applicant_doc_rejection_reason'] ?>
+                                <?php foreach($pendingOrders as $pendingOrder) { ?>
                                     <tr>
                                         <td><?php echo $pendingOrder['applicant_name'] ?></td>
                                         <td><?php echo $pendingOrder['order_id'] ?></td>
@@ -80,12 +82,10 @@ if (!$connection) {
                                         </td>
                                         <td><?php echo $pendingOrder['case_year'] ?></td>
                                         <td><?php echo $pendingOrder['payment_type'] ?></td>
-                                        <td><?php echo $pendingOrder['document_type'] ?></td>
-                                        <td><?php echo date('d-m-Y', strtotime($pendingOrder['document_date'])) ?></td>
                                         <td><?php echo ($pendingOrder['apply_date']) ? date('d-m-Y', strtotime($pendingOrder['apply_date'])) : '---'?></td>
                                         <td>
                                             <?php if(empty($pendingOrder['order_status'])) { ?>
-                                                <a href="" data-toggle="modal" data-target="#approve-order-modal" data-id="<?php echo $pendingOrder['id']; ?>" class="approve-order no-text-decoration" title="Approve Order">
+                                                <a href="" data-toggle="modal" data-target="#approve-order-modal" data-id="<?php echo $pendingOrder['id']; ?>" data-payment="<?php echo $pendingOrder['payment_type']; ?>" class="approve-order no-text-decoration" title="Approve Order">
                                                     <i class="fa fa-2x fa-check"></i>
                                                 </a>
                                                 <a href="" data-toggle="modal" data-target="#reject-order-modal" data-id="<?php echo $pendingOrder['id']; ?>" class="reject-order no-text-decoration" title="Reject Order">
@@ -100,7 +100,7 @@ if (!$connection) {
                         </div>
                     </div>
                 </div>
-                <div id="disposed_table" class="tab-pane fade in">
+                <div id="in_transit_table" class="tab-pane fade in">
                     <div class="visible-block sorted-records-wrapper sorted-records">
                         <div class="table-responsive">
                             <table class="table data-tables">
@@ -111,50 +111,32 @@ if (!$connection) {
                                     <th>Case No.</th>
                                     <th>Case Year</th>
                                     <th>Case Status</th>
-                                    <th>Document type</th>
-                                    <th>Document Date</th>
                                     <th>Apply Date</th>
                                     <th>Doc. Upload Date</th>
-
-                                    <!-- <th>Document status</th>-->
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <?php foreach($disposedOrders as $disposedOrder) { $reason = $disposedOrder['applicant_doc_rejection_reason'] ?>
+                                <?php foreach($inTransitOrders as $inTransit) { ?>
                                     <tr>
-                                        <td><?php echo $disposedOrder['applicant_name'] ?></td>
-                                        <td><?php echo $disposedOrder['order_id'] ?></td>
-                                        <td><?php /*echo $disposedOrder['case_no'] */?>
-
-                                            <a href="" data-toggle="modal" data-target="#view-detail-modal" data-id="<?php echo $disposedOrder['id']; ?>" class="view-detail no-text-decoration" title="View Detail of Order">
-                                                <?php echo $disposedOrder['case_no'] ?>
+                                        <td><?php echo $inTransit['applicant_name'] ?></td>
+                                        <td><?php echo $inTransit['order_id'] ?></td>
+                                        <td><?php /*echo $inTransit['case_no'] */?>
+                                            <a href="" data-toggle="modal" data-target="#view-detail-modal" data-id="<?php echo $inTransit['id']; ?>" class="view-detail no-text-decoration" title="View Detail of Order">
+                                                <?php echo $inTransit['case_no'] ?>
                                             </a>
                                         </td>
-                                        <td><?php echo $disposedOrder['case_year'] ?></td>
-                                        <td><?php echo ($disposedOrder['order_status']) ? $disposedOrder['order_status'] : '---' ?></td>
-                                        <td><?php echo $disposedOrder['document_type'] ?></td>
-                                        <td><?php echo date('d-m-Y', strtotime($disposedOrder['document_date'])) ?></td>
-                                        <td><?php echo ($disposedOrder['apply_date']) ? date('d-m-Y', strtotime($disposedOrder['apply_date'])) : '---'?></td>
-                                        <td><?php echo ($disposedOrder['upload_date']) ? date('d-m-Y', strtotime($disposedOrder['upload_date'])) : '---' ?></td>
-
-                                        <!--<td><?php /*echo (!$disposedOrder['applicant_doc_status']) ? '---' : (($disposedOrder['applicant_doc_status'] == 'rejected') ?
-                                                "<a class='rejection-reason' data-reason='".$reason."' href='' data-toggle='modal' data-target='#view-rejection-reason-modal'> rejected </a>"
-                                                : $disposedOrder['applicant_doc_status']) */?>
-                                        </td>-->
+                                        <td><?php echo $inTransit['case_year'] ?></td>
+                                        <td><?php echo ($inTransit['order_status']) ? $inTransit['order_status'] : '---' ?></td>
+                                        <td><?php echo ($inTransit['apply_date']) ? date('d-m-Y', strtotime($inTransit['apply_date'])) : '---'?></td>
+                                        <td><?php echo ($inTransit['upload_date']) ? date('d-m-Y', strtotime($inTransit['upload_date'])) : '---' ?></td>
                                         <td>
-                                            <?php if(empty($disposedOrder['order_status'])) { ?>
-                                                <a href="" data-toggle="modal" data-target="#approve-order-modal" data-id="<?php echo $disposedOrder['id']; ?>" class="approve-order no-text-decoration" title="Approve Order">
-                                                    <i class="fa fa-2x fa-check"></i>
-                                                </a>
-                                                <a href="" data-toggle="modal" data-target="#reject-order-modal" data-id="<?php echo $disposedOrder['id']; ?>" class="reject-order no-text-decoration" title="Reject Order">
-                                                    <i class="fa fa-2x fa-times"></i>
-                                                </a>
-                                            <?php } else {
-                                                if($disposedOrder['order_status'] == 'approved' && !$disposedOrder['applicant_doc_status'] && $disposedOrder['upload_date'] > date('Y-m-d')) {
-                                                    echo "<a class='change-upload-date-button' href='' data-id = ".$disposedOrder['id']." data-upload=".strtotime($disposedOrder['upload_date'])." data-toggle='modal' data-target='#change-upload-date-modal'><i class='fa fa-2x fa-calendar'></i></a>";
-                                                }
-                                            } ?>
+                                            <?php if($inTransit['upload_date'] > date('Y-m-d')) {
+                                                echo "<a class='change-upload-date-button' href='' data-id = ".$inTransit['id']." data-upload=".strtotime($inTransit['upload_date'])." data-toggle='modal' data-target='#change-upload-date-modal'><i class='fa fa-2x fa-calendar'></i></a>";
+                                            } else { ?>
+                                                <a href="issued-document.php?id=<?php echo $inTransit['id']?>"> Issued </a>
+                                                <a href="" class="lapsed-document-button" data-toggle="modal" data-target="#lapsed-document-modal" data-id="<?php echo $inTransit['id'] ?>"> Lapsed </a>
+                                            <?php }?>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -163,69 +145,73 @@ if (!$connection) {
                         </div>
                     </div>
                 </div>
-                <div id="search_order" class="tab-pane fade in <?php echo ($applyDate) ? 'active' : ''?>">
-
-                    <form action="search-order.php" method="post" class="form-horizontal">
-                        <div class="form-group">
-                            <div class="mt20 col-sm-12">
-                                <div class="col-sm-3">
-                                    <input placeholder="Apply Date" class="apply_date_format form-control" type="text" name="apply_date" value="<?php echo $applyDate; ?>">
-                                </div>
-                                <div class="col-sm-9">
-                                    <input class="btn btn-green btn-global btn-global-thick" type="submit" value="Search">
-                                </div>
-                            </div>
-                            <br><br>
-                        </div>
-                    </form>
-
-
-                    <?php if($applyDate) { ?>
-
-                        <br><br>
-
-                        <button class="btn btn-global btn-global-thin ml10" onclick="exportPdf()"> Export Pdf</button>
-                        <button class="btn btn-global btn-global-thin ml10" onclick="exportExcel()"> Export Excel</button>
-
-                        <br><br><br><br>
+                <div id="rejected_table" class="tab-pane fade in">
                     <div class="visible-block sorted-records-wrapper sorted-records">
                         <div class="table-responsive">
-                            <table id="search_order_table" class="table data-tables">
+                            <table class="table data-tables">
                                 <thead>
                                 <tr>
+                                    <th>Applicant Name</th>
                                     <th>Order Id</th>
                                     <th>Case No.</th>
                                     <th>Case Year</th>
-                                    <th>Document type</th>
-                                    <th>Document Date</th>
+                                    <th>Case Status</th>
                                     <th>Apply Date</th>
-
-                                    <th>Status</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <?php foreach($searchOrders as $searchOrder) { ?>
+                                <?php foreach($rejectedOrders as $rejectedOrder) { ?>
                                     <tr>
-                                        <td><?php echo $searchOrder['order_id'] ?></td>
-                                        <td><?php /*echo $searchOrder['case_no'] */?>
-
-                                            <a href="" data-toggle="modal" data-target="#view-detail-modal" data-id="<?php echo $searchOrder['id']; ?>" class="view-detail no-text-decoration" title="View Detail of Order">
-                                                <?php echo $searchOrder['case_no'] ?>
+                                        <td><?php echo $rejectedOrder['applicant_name'] ?></td>
+                                        <td><?php echo $rejectedOrder['order_id'] ?></td>
+                                        <td><?php /*echo $rejectedOrder['case_no'] */?>
+                                            <a href="" data-toggle="modal" data-target="#view-detail-modal" data-id="<?php echo $rejectedOrder['id']; ?>" class="view-detail no-text-decoration" title="View Detail of Order">
+                                                <?php echo $rejectedOrder['case_no'] ?>
                                             </a>
                                         </td>
-                                        <td><?php echo $searchOrder['case_year'] ?></td>
-                                        <td><?php echo $searchOrder['document_type'] ?></td>
-                                        <td><?php echo date('d-m-Y', strtotime($searchOrder['document_date'])) ?></td>
-                                        <td><?php echo ($searchOrder['apply_date']) ? date('d-m-Y', strtotime($searchOrder['apply_date'])) : '---'?></td>
-                                        <td><?php echo (!$searchOrder['applicant_doc_status']) ? 'pending' : $searchOrder['applicant_doc_status']; ?></td>
+                                        <td><?php echo $rejectedOrder['case_year'] ?></td>
+                                        <td><?php echo ($rejectedOrder['order_status']) ? $rejectedOrder['order_status'] : '---' ?></td>
+                                        <td><?php echo ($rejectedOrder['apply_date']) ? date('d-m-Y', strtotime($rejectedOrder['apply_date'])) : '---'?></td>
                                     </tr>
                                 <?php } ?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <?php } ?>
-
+                </div>
+                <div id="issued_table" class="tab-pane fade in">
+                    <div class="visible-block sorted-records-wrapper sorted-records">
+                        <div class="table-responsive">
+                            <table class="table data-tables">
+                                <thead>
+                                <tr>
+                                    <th>Applicant Name</th>
+                                    <th>Order Id</th>
+                                    <th>Case No.</th>
+                                    <th>Case Year</th>
+                                    <th>Apply Date</th>
+                                    <th>Issued Date</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php foreach($issuedOrders as $issuedOrder) { ?>
+                                    <tr>
+                                        <td><?php echo $issuedOrder['applicant_name'] ?></td>
+                                        <td><?php echo $issuedOrder['order_id'] ?></td>
+                                        <td><?php /*echo $issuedOrder['case_no'] */?>
+                                            <a href="" data-toggle="modal" data-target="#view-detail-modal" data-id="<?php echo $issuedOrder['id']; ?>" class="view-detail no-text-decoration" title="View Detail of Order">
+                                                <?php echo $issuedOrder['case_no'] ?>
+                                            </a>
+                                        </td>
+                                        <td><?php echo $issuedOrder['case_year'] ?></td>
+                                        <td><?php echo ($issuedOrder['apply_date']) ? date('d-m-Y', strtotime($issuedOrder['apply_date'])) : '---'?></td>
+                                        <td><?php echo ($issuedOrder['issued_date']) ? date('d-m-Y', strtotime($issuedOrder['issued_date'])) : '---' ?></td>
+                                    </tr>
+                                <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -280,6 +266,34 @@ if (!$connection) {
     </div>
 </div>
 
+<div class="modal fade" id="lapsed-document-modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h5 class="modal-title">Lapsed Document</h5>
+            </div>
+            <form action="lapsed-document.php" method="POST" accept-charset="UTF-8" >
+                <div class="modal-body">
+                    <input type="hidden" id="lapsed_order_id" name="order_id" value="">
+                    <div class="col-sm-12 mb20">
+                        <label class="col-sm-3 mt20">New Date<em class="required-asterik">*</em></label>
+                        <div class="col-sm-9">
+                            <input class="date-format form-control" id="lapsed_new_date" name="lapsed_new_date" type="text" value="" required>
+                        </div>
+                    </div>
+                    <p>Why document not uploaded on time? Please mention lapsed reason.<em class="required-asterik">*</em></p><br>
+                    <textarea class="form-control" name="lapsed_reason" value="" required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-global-thin" data-dismiss="modal">Cancel</button>
+                    <input type="submit" class="btn btn-green btn-global-thin" value="Done">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="view-detail-modal" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -316,7 +330,7 @@ if (!$connection) {
                             <em class="required-asterik">*</em>
                         </label>
                         <div class="col-sm-8 text-left bold">
-                            <input class="form-control" type="number" name="paid_amount" min="0" required>
+                            <input class="form-control" type="number" name="paid_amount" id="paid_amount" min="0" required>
                         </div>
                     </div>
 
@@ -392,7 +406,14 @@ if (!$connection) {
         $('#upload_date_id').val(id);
         $( "#upload_date" ).datepicker( "option", "maxDate", newDate );
     });
-    
+
+    $('.lapsed-document-button').click(function () {
+
+        var id = $(this).data('id');
+        $('#lapsed_order_id').val(id);
+    });
+
+
     $('.view-detail').click(function () {
         var id = $(this).data('id');
         jQuery.ajax({
@@ -415,31 +436,16 @@ if (!$connection) {
 
     $('.approve-order').click(function () {
         var id = $(this).data('id');
+        var payment_type = $(this).data('payment');
+
         $('#approve_order_id').val(id);
+        if(payment_type == 'free') {
+            $('#paid_amount').val(0);
+        } else if (payment_type == 'single') {
+            $('#paid_amount').val(20);
+        } else if (payment_type == 'double') {
+            $('#paid_amount').val(40);
+        }
     });
-
-
-    function exportExcel() {
-        $('#search_order_table').tableExport({type:'excel',escape:'false',title:'<?php echo $tableHeading?>'});
-    }
-
-    function exportPdf() {
-        var doc = new jsPDF('l');
-        var title = '<?php echo $tableHeading; ?>';
-        doc.text(title, 14, 16);
-        var elem = document.getElementById("search_order_table");
-        var res = doc.autoTableHtmlToJson(elem);
-        //res.columns.splice(-1,1);
-        doc.autoTable(res.columns, res.data, {
-            startY: 20,
-            margin: {horizontal: 7},
-            bodyStyles: {valign: 'top'},
-            styles: {overflow: 'linebreak', columnWidth: 'wrap'},
-            columnStyles: {text: {columnWidth: 'auto'}}
-        });
-        doc.output('dataurlnewwindow');
-    }
-
-
 </script>
 <?php include '../layouts/footer.php' ?>
