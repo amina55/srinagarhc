@@ -69,3 +69,6 @@
 
   ﻿ALTER TABLE public.client_order
     ADD COLUMN apply_year smallint NOT NULL default 2017;
+
+  ﻿﻿ALTER TABLE public.client_order
+    ADD COLUMN cino character(16) NOT NULL default '';

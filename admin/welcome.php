@@ -63,6 +63,7 @@ if (!$connection) {
                                 <tr>
                                     <th>Applicant Name</th>
                                     <th>Order Id</th>
+                                    <th>CNR No.</th>
                                     <th>Case No.</th>
                                     <th>Case Year</th>
                                     <th>Payment type</th>
@@ -75,6 +76,7 @@ if (!$connection) {
                                     <tr>
                                         <td><?php echo $pendingOrder['applicant_name'] ?></td>
                                         <td><?php echo $pendingOrder['order_id'] ?></td>
+                                        <td><?php echo $pendingOrder['cino'] ?></td>
                                         <td><?php /*echo $pendingOrder['case_no'] */?>
                                             <a href="" data-toggle="modal" data-target="#view-detail-modal" data-id="<?php echo $pendingOrder['id']; ?>" class="view-detail no-text-decoration" title="View Detail of Order">
                                                 <?php echo $pendingOrder['case_no'] ?>
@@ -108,6 +110,7 @@ if (!$connection) {
                                 <tr>
                                     <th>Applicant Name</th>
                                     <th>Order Id</th>
+                                    <th>CNR No.</th>
                                     <th>Case No.</th>
                                     <th>Case Year</th>
                                     <th>Case Status</th>
@@ -121,6 +124,7 @@ if (!$connection) {
                                     <tr>
                                         <td><?php echo $inTransit['applicant_name'] ?></td>
                                         <td><?php echo $inTransit['order_id'] ?></td>
+                                        <td><?php echo $inTransit['cino'] ?></td>
                                         <td><?php /*echo $inTransit['case_no'] */?>
                                             <a href="" data-toggle="modal" data-target="#view-detail-modal" data-id="<?php echo $inTransit['id']; ?>" class="view-detail no-text-decoration" title="View Detail of Order">
                                                 <?php echo $inTransit['case_no'] ?>
@@ -153,6 +157,7 @@ if (!$connection) {
                                 <tr>
                                     <th>Applicant Name</th>
                                     <th>Order Id</th>
+                                    <th>CNR No.</th>
                                     <th>Case No.</th>
                                     <th>Case Year</th>
                                     <th>Case Status</th>
@@ -164,6 +169,7 @@ if (!$connection) {
                                     <tr>
                                         <td><?php echo $rejectedOrder['applicant_name'] ?></td>
                                         <td><?php echo $rejectedOrder['order_id'] ?></td>
+                                        <td><?php echo $rejectedOrder['cino'] ?></td>
                                         <td><?php /*echo $rejectedOrder['case_no'] */?>
                                             <a href="" data-toggle="modal" data-target="#view-detail-modal" data-id="<?php echo $rejectedOrder['id']; ?>" class="view-detail no-text-decoration" title="View Detail of Order">
                                                 <?php echo $rejectedOrder['case_no'] ?>
@@ -187,6 +193,7 @@ if (!$connection) {
                                 <tr>
                                     <th>Applicant Name</th>
                                     <th>Order Id</th>
+                                    <th>CNR No.</th>
                                     <th>Case No.</th>
                                     <th>Case Year</th>
                                     <th>Apply Date</th>
@@ -198,6 +205,7 @@ if (!$connection) {
                                     <tr>
                                         <td><?php echo $issuedOrder['applicant_name'] ?></td>
                                         <td><?php echo $issuedOrder['order_id'] ?></td>
+                                        <td><?php echo $issuedOrder['cino'] ?></td>
                                         <td><?php /*echo $issuedOrder['case_no'] */?>
                                             <a href="" data-toggle="modal" data-target="#view-detail-modal" data-id="<?php echo $issuedOrder['id']; ?>" class="view-detail no-text-decoration" title="View Detail of Order">
                                                 <?php echo $issuedOrder['case_no'] ?>

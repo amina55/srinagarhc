@@ -18,10 +18,12 @@ if (!$connection) {
         $licenceNo = trim($_POST['licence_no']);
         $filNo = trim($_POST['fil_no']);
         $filYear = trim($_POST['fil_year']);
+        $cino = trim($_POST['cino']);
+        $currentDate = date('m/d/Y');
+        $currentYear = date('Y');
 
-         $currentDate = date('m/d/Y');
-         $insertQuery = "INSERT INTO client_order (applicant_name, case_type, case_no, case_year, payment_type, document_type, document_date, order_id, licence_no, apply_date, fil_no, fil_year) " .
-             "VALUES  ('$name', $caseType, $caseNo, $caseYear, '$paymentType', '$documentType', '$documentDate', '$orderId', '$licenceNo', '$currentDate', $filNo, $filYear)";
+         $insertQuery = "INSERT INTO client_order (applicant_name, case_type, case_no, case_year, payment_type, document_type, document_date, order_id, licence_no, apply_date, apply_year, fil_no, fil_year, cino) " .
+             "VALUES  ('$name', $caseType, $caseNo, $caseYear, '$paymentType', '$documentType', '$documentDate', '$orderId', '$licenceNo', '$currentDate', $currentYear, $filNo, $filYear, '$cino')";
 
          $result = $connection->exec($insertQuery);
          if (empty($result)) {

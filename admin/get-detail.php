@@ -21,13 +21,13 @@ try {
             $licenceNo = $order['licence_no'];
             $orderId = $order['id'];
 
-            $query = "select fil_no, pet_name, res_name, pet_adv, res_adv from civil_t where fil_no = $caseNo and filcase_type = $caseType  and fil_year = $caseYear";
+            $query = "select fil_no, pet_name, res_name, pet_adv, res_adv from civil_t where reg_no = $caseNo and regcase_type = $caseType  and reg_year = $caseYear";
             $statement = $connection->prepare($query);
             $statement->execute();
             $detail = $statement->fetch(PDO::FETCH_ASSOC);
 
             if(empty($detail)) {
-                $query = "select fil_no, pet_name, res_name, pet_adv, res_adv from civil_t_a where fil_no = $caseNo and filcase_type = $caseType  and fil_year = $caseYear";
+                $query = "select fil_no, pet_name, res_name, pet_adv, res_adv from civil_t_a where reg_no = $caseNo and regcase_type = $caseType  and reg_year = $caseYear";
                 $statement = $connection->prepare($query);
                 $statement->execute();
                 $detail = $statement->fetch(PDO::FETCH_ASSOC);

@@ -42,7 +42,7 @@ if (!$connection) {
             }
             if(!$message) {
                 $id = '';
-                $query = "select fil_no, fil_year, pet_name, res_name, pet_adv, res_adv from civil_t where fil_no = $caseNo and filcase_type = $caseType  and fil_year = $caseYear";
+                $query = "select cino, fil_no, fil_year, pet_name, res_name, pet_adv, res_adv from civil_t where reg_no = $caseNo and regcase_type = $caseType  and reg_year = $caseYear";
                 $statement = $connection->prepare($query);
                 $statement->execute();
                 $detail = $statement->fetch();
@@ -53,7 +53,7 @@ if (!$connection) {
                         $detail = null;
                     }
                 } else {
-                    $query = "select fil_no, fil_year, pet_name, res_name, pet_adv, res_adv from civil_t_a where fil_no = $caseNo and filcase_type = $caseType  and fil_year = $caseYear";
+                    $query = "select cino, fil_no, fil_year, pet_name, res_name, pet_adv, res_adv from civil_t_a where reg_no = $caseNo and regcase_type = $caseType  and reg_year = $caseYear";
                     $statement = $connection->prepare($query);
                     $statement->execute();
                     $detail = $statement->fetch();
@@ -90,6 +90,7 @@ include "../login/master.php";
                 <input type="hidden" name="order_id" value="<?php echo $orderId; ?>">
                 <input type="hidden" name="fil_no" value="<?php echo $detail['fil_no']; ?>">
                 <input type="hidden" name="fil_year" value="<?php echo $detail['fil_year']; ?>">
+                <input type="hidden" name="cino" value="<?php echo $detail['cino']; ?>">
 
                 <br>
                 <div class="form-group col-sm-12">

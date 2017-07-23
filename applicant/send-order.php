@@ -94,7 +94,7 @@ include "../login/master.php";
                             <input type="checkbox" name="document_type[]" value="writ">Writ<br>
                             <input type="checkbox" name="document_type[]" value="objection">Objection<br>
                             <input type="checkbox" name="document_type[]" value="vakaltnama">Vakaltnama<br>
-                            <input type="checkbox" name="document_type[]" value="order">Order<br>
+                            <input type="checkbox" name="document_type[]" value="order">Interim Order<br>
                             <input type="checkbox" name="document_type[]" value="judgement">Judgement<br>
                             <input type="checkbox" name="document_type[]" value="CMP">CMP<br>
                             <input type="checkbox" name="document_type[]" value="reply">Reply<br>
@@ -110,8 +110,8 @@ include "../login/master.php";
                             <em class="required-asterik">*</em>
                         </label>
                         <select class="form-control" id="payment_type" name="payment_type">
-                            <option value="single">Single (20₹)</option>
-                            <option value="double">Double (40₹)</option>
+                            <option value="single">Single </option>
+                            <option value="double">Double </option>
                             <option value="free">Free</option>
                         </select>
                         <span class="error-message"></span>

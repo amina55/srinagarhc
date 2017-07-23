@@ -287,7 +287,6 @@ if (!$connection) {
     });
 
     function exportExcel() {
-        alert('yes script run');
 
         $('#search_order_table').tableExport({type:'excel',escape:'false',title:'<?php echo $tableHeading?>'});
     }
