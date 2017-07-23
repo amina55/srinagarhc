@@ -226,7 +226,7 @@ if (!$connection) {
                                     <td><?php echo $searchOrder['document_type'] ?></td>
                                     <td><?php echo date('d-m-Y', strtotime($searchOrder['document_date'])) ?></td>
                                     <td><?php echo ($searchOrder['apply_date']) ? date('d-m-Y', strtotime($searchOrder['apply_date'])) : '---'?></td>
-                                    <td><?php echo (!$searchOrder['applicant_doc_status']) ? 'pending' : $searchOrder['applicant_doc_status']; ?></td>
+                                    <td><?php echo (!$searchOrder['order_status']) ? 'pending' : $searchOrder['order_status']; ?></td>
                                 </tr>
                             <?php } ?>
                             </tbody>
