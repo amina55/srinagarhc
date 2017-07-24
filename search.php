@@ -1,6 +1,50 @@
-<?php
-include "../layouts/master.php";
-include "../layouts/database_access.php";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>High Court</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/datatables.min.css">
+    <link rel="stylesheet" href="css/developer.css">
+    <link rel="stylesheet" href="css/varaiables.css">
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/helper.js"></script>
+    <script src="js/datatables.min.js"></script>
+    <script src="js/high-court.js"></script>
+
+
+</head>
+<body>
+<header>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <a href="" class="logo pull-left no-text-decoration">
+                    <img src="images/logocopy.jpg" />
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="container-fluid mt20">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+        <?php
+include "layouts/database_access.php";
 $pendingOrders = $disposedOrders = array();
 $tableHeading = '';
 $currentYear = date('Y');
@@ -312,11 +356,11 @@ if (!$connection) {
     </div>
 </div>
 
-<script src="../js/jspdf.debug.js"></script>
-<script src="../js/jspdf.plugin.autotable.js"></script>
-<script src="../js/faker.min.js"></script>
-<script src="../js/tableExport.js"></script>
-<script src="../js/jquery.base64.js"></script>
+<script src="js/jspdf.debug.js"></script>
+<script src="js/jspdf.plugin.autotable.js"></script>
+<script src="js/faker.min.js"></script>
+<script src="js/tableExport.js"></script>
+<script src="js/jquery.base64.js"></script>
 
 
 <script>
@@ -327,7 +371,7 @@ if (!$connection) {
     $('.view-detail').click(function () {
         var id = $(this).data('id');
         jQuery.ajax({
-            url: 'get-detail.php?id='+id,
+            url: 'admin/get-detail.php?id='+id,
             type: "GET",
             success: function (data) {
                 $('#view-detail-body').html(data);
@@ -364,4 +408,4 @@ if (!$connection) {
 
 
 </script>
-<?php include '../layouts/footer.php' ?>
+<?php include 'layouts/footer.php' ?>

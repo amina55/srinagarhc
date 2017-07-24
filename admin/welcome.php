@@ -39,7 +39,7 @@ if (!$connection) {
             <li><a data-toggle="tab" href="#issued_table">Issued Order</a></li>
 
         </ul>
-        <a href="search.php" class="btn btn-global btn-global-thick pull-right" style="margin-top: -43px">Search Order</a>
+        <a href="../search.php" class="btn btn-global btn-global-thick pull-right" style="margin-top: -43px">Search Order</a>
     </div>
     <!------------------------------- Page Body --------------------------------->
     <div class="box-body">

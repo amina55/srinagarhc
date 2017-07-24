@@ -24,7 +24,7 @@ include "../login/master.php";
 
     <div class="main-login">
         <a href="view-order.php" class="btn btn-lg large-button"> View Order Detail</a>
-        <a href="../admin/search.php" class="btn btn-lg large-button"> Search Order</a>
+        <a href="../search.php" class="btn btn-lg large-button"> Search Order</a>
 
         <br>
         <div class="main-center">
