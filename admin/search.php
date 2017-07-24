@@ -5,6 +5,7 @@ $pendingOrders = $disposedOrders = array();
 $tableHeading = '';
 $currentYear = date('Y');
 $displayTable = false;
+$reasonColumnShow = false;
 if (!$connection) {
     $message = "Connection Failed.";
 } else {
@@ -23,6 +24,10 @@ if (!$connection) {
         $caseType = trim($_POST['case_type']);
         $caseYear = trim($_POST['case_year']);
         $caseNo = trim($_POST['case_no']);
+
+        $paymentType = trim($_POST['payment_type']);
+        $caseStatus = trim($_POST['case_status']);
+        $cino = trim($_POST['cino']);
 
         $appliedBy = trim($_POST['applied_by']);
 
@@ -74,6 +79,11 @@ if (!$connection) {
             $whereQuery .= ($caseNo) ? " case_no = $caseNo  and " : '';
             $whereQuery .= ($caseYear) ? " case_year = $caseYear  and " : '';
             $whereQuery .= ($appliedBy) ? " applicant_name like  '%$appliedBy%'  and " : '';
+            $whereQuery .= ($paymentType) ? " payment_type = '$paymentType'  and " : '';
+            $whereQuery .= ($caseStatus) ? (($caseStatus == 'pending') ? " order_status is null and " : " order_status = '$caseStatus'  and ") : '';
+            $whereQuery .= ($cino) ? " cino = '$cino' and " : '';
+
+            $reasonColumnShow = ($caseStatus == 'rejected' || $caseStatus == 'lapsed' ) ? true : false;
 
             if($whereQuery) {
                 $finalQuery .= ' where '. rtrim($whereQuery, 'and ');
@@ -128,6 +138,38 @@ if (!$connection) {
                         <label class="col-sm-1"> Case Year </label>
                         <div class="col-sm-3">
                             <input placeholder="Case Year" class="form-control" type="number" name="case_year" min="1800" max="<?php echo $currentYear; ?>">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="mt20 col-sm-12">
+                        <label class="col-sm-2 mt10"> Payment </label>
+
+                        <div class="col-sm-2">
+                            <select  name="payment_type" class="form-control">
+                                <option value="">All</option>
+                                <option value="single">Single</option>
+                                <option value="double">Double</option>
+                                <option value="free">Free</option>
+                            </select>
+                        </div>
+
+                        <label class="col-sm-2"> Case Status </label>
+                        <div class="col-sm-2">
+                            <select  name="case_status" class="form-control">
+                                <option value="">All</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="lapsed">Lapsed</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="issued">Issued</option>
+                            </select>
+                        </div>
+
+                        <label class="col-sm-1"> CNR No. </label>
+                        <div class="col-sm-3">
+                            <input placeholder="CNR No." class="form-control" type="text" name="cino">
                         </div>
                     </div>
                 </div>
@@ -208,8 +250,10 @@ if (!$connection) {
                                 <th>Document type</th>
                                 <th>Document Date</th>
                                 <th>Apply Date</th>
-
                                 <th>Status</th>
+                                <?php if($reasonColumnShow) { ?>
+                                    <th>Reason</th>
+                                <?php } ?>
                             </tr>
                             </thead>
                             <tbody>
@@ -227,6 +271,15 @@ if (!$connection) {
                                     <td><?php echo date('d-m-Y', strtotime($searchOrder['document_date'])) ?></td>
                                     <td><?php echo ($searchOrder['apply_date']) ? date('d-m-Y', strtotime($searchOrder['apply_date'])) : '---'?></td>
                                     <td><?php echo (!$searchOrder['order_status']) ? 'pending' : $searchOrder['order_status']; ?></td>
+
+                                    <?php if($reasonColumnShow) { ?>
+                                        <td>
+                                            <?php echo ($searchOrder['order_status'] == 'rejected' || $searchOrder['order_status'] == 'lapsed' )
+                                                ? (($searchOrder['order_status'] == 'rejected') ? $searchOrder['rejection_reason'] : $searchOrder['lapsed_reason']) : '---'; ?>
+                                        </td>
+                                    <?php } ?>
+
+
                                 </tr>
                             <?php } ?>
                             </tbody>
