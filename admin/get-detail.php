@@ -1,5 +1,4 @@
 <?php
-include "admin_access.php";
 include "../layouts/database_access.php";
 try {
     if (!$connection) {
@@ -43,7 +42,6 @@ try {
 }
 
 ?>
-
     <?php if (!empty($message)) { ?>
         <div class="alert alert-danger">
             <?php echo $message?>
