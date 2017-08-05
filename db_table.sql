@@ -72,3 +72,17 @@
 
   ﻿﻿ALTER TABLE public.client_order
     ADD COLUMN cino character(16) NOT NULL default '';
+
+
+  // table in pgsql DB
+  ﻿CREATE TABLE public.user_salt
+  (
+    id serial NOT NULL,
+    name character varying(50) NOT NULL,
+    username character varying(50) NOT NULL,
+    email character varying(50) NOT NULL,
+    password character varying(200) NOT NULL,
+    salt character varying(200) NOT NULL,
+    type character varying(30) NOT NULL
+    PRIMARY KEY (id)
+  )
