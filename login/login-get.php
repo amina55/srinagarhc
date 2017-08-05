@@ -16,24 +16,40 @@ try{
         if (!$connection) {
             $message = "Connection Failed.";
         } else {
-            $stmt = $connection->prepare('SELECT id, name, username, type FROM users WHERE username = :username AND password = :password');
-            $stmt->execute(array('username' => $userName, 'password' => hash('sha512', $password)));
+            $stmt = $connection->prepare('SELECT id, username, password, salt, type FROM user_salt WHERE username = :username');
+            $stmt->execute(array('username' => $userName));
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             if (empty($user)) {
-                $message = "User Name or Password is incorrect";
+                $message = "User Name is incorrect";
             } else {
-                $userType = $user['type'];
-                $_SESSION['logged_in'] = $userType;
-                $_SESSION['logged_in_user'] = $user;
-                if($userType == 'admin') {
-                    echo '<script>window.location = "../admin/welcome.php";</script>';
-                } else if($userType == 'super-admin') {
-                    echo '<script>window.location = "../super-admin/welcome.php";</script>';
-                } else if($userType == 'applicant') {
-                    echo '<script>window.location = "../applicant/welcome.php";</script>';
+                include "functions.php";
+                $decryptSalt = encrypt_decrypt('decrypt', $user['salt']);
+                $decryptPassword = encrypt_decrypt('decrypt', $user['password'], $decryptSalt);
+
+                if($password == $decryptPassword) {
+                    $salt = generateRandomSalt();
+                    $hashedPassword = encrypt_decrypt('encrypt', $password, $salt);
+                    $hashedSalt = encrypt_decrypt('encrypt', $salt);
+                    $updateQuery = "Update user_salt SET salt = :salt, password = :password where id = :id";
+                    $statement = $connection->prepare($updateQuery);
+                    $statement->execute(array('salt' => $hashedSalt, 'password' => $hashedPassword, 'id' => $user['id']));
+                    $userType = $user['type'];
+
+                    $_SESSION['logged_in'] = $userType;
+                    $_SESSION['logged_in_user'] = $user;
+                    if($userType == 'admin') {
+                        echo '<script>window.location = "../admin/welcome.php";</script>';
+                    } else if($userType == 'super-admin') {
+                        echo '<script>window.location = "../super-admin/welcome.php";</script>';
+                    } else if($userType == 'applicant') {
+                        echo '<script>window.location = "../applicant/welcome.php";</script>';
+                    } else {
+                        $message = "Error in Login, No required user type.";
+                    }
                 } else {
-                    $message = "Error in Login, No required user type.";
+                    $message = "<p class='error'>Your given password is incorrect</p>";
                 }
+
             }
         }
     }

@@ -34,14 +34,21 @@ try{
                         }
 
                         if(!$repeat) {
-                            $userType = '';
-                            if($type == 'applicant' || ($type == 'admin' && !empty($_SESSION['logged_in']) && $_SESSION['logged_in'] == 'super-admin')) {
+                            $userType = 'admin';
+                            /*if($type == 'applicant' || ($type == 'admin' && !empty($_SESSION['logged_in']) && $_SESSION['logged_in'] == 'super-admin')) {
                                 $userType = $type;
-                            }
+                            }*/
                             if($userType) {
-                                $password = hash('sha512', $password);
-                                $insertQuery = "INSERT INTO users (name, username, email, password, type) VALUES  ('$name', '$username', '$email', '$password', '$userType')";
-                                $result = $connection->exec($insertQuery);
+
+                                include "functions.php";
+                                $salt = generateRandomSalt();
+                                $hashedPassword = encrypt_decrypt('encrypt', $password, $salt);
+                                $hashedSalt = encrypt_decrypt('encrypt', $salt);
+                                $insertQuery = "INSERT INTO user_salt  (name, username, email, password, salt, type) VALUES  (:name, :username, :email, :password, :salt, :type)";
+                                $statement = $connection->prepare($insertQuery);
+                                $result = $statement->execute(array('name' => $name, 'username' => $username, 'email' => $email,
+                                    'password' => $hashedPassword, 'salt' => $hashedSalt, 'type' => $userType));
+
                                 if (!$result) {
                                     print "<div class='alert alert-danger'>Error in User Sign up</div>";
                                 } else {
